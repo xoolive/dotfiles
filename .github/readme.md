@@ -18,14 +18,16 @@ A description of how to install environments for several programming languages a
 
 ## Miscellaneous
 
-- MacOS: use TouchID for sudo
+- Use TouchID for sudo (MacOS)
 
   ```sh
   # in /etc/pam.d/sudo, after pam_smartcard.so
   auth       sufficient     pam_tid.so
   ```
 
-- Keyboard layout: I use a specific French variant of the Dvorak keyboard layout (no, not bépo), and like to use Caps Lock as an extra Ctrl key. All described in another repo [xoolive/dvorak-fr](https://github.com/xoolive/dvorak-fr).
+- Keyboard layout
+
+  I use a specific French variant of the Dvorak keyboard layout (no, not bépo), and like to use Caps Lock as an extra Ctrl key. All the settings are described in [xoolive/dvorak-fr](https://github.com/xoolive/dvorak-fr).
 
 
 ## Setup
