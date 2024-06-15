@@ -107,28 +107,6 @@
 	export TMUX_POWERLINE_SEG_HOSTNAME_FORMAT="short"
 # }
 
-# ifstat.sh {
-	# Symbol for Download.
-	# export TMUX_POWERLINE_SEG_IFSTAT_DOWN_SYMBOL="⇊"
-	# Symbol for Upload.
-	# export TMUX_POWERLINE_SEG_IFSTAT_UP_SYMBOL="⇈"
-	# Symbol for Ethernet.
-	# export TMUX_POWERLINE_SEG_IFSTAT_ETHERNET_SYMBOL="󰈀"
-	# Symbol for WLAN.
-	# export TMUX_POWERLINE_SEG_IFSTAT_WLAN_SYMBOL="󱚻"
-	# Symbol for WWAN.
-	# export TMUX_POWERLINE_SEG_IFSTAT_WWAN_SYMBOL=""
-	# Separator for Interfaces.
-	# export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_SEPARATOR=" | "
-	# Space separated list of interface names to be excluded. substring match, regexp can be used.
-	# Examples:
-	# export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_EXCLUDES="tun" # will exclude 'tun0', 'utun0', 'itun', 'tun08127387'
-	# export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_EXCLUDES="tun0 tuntun" # will exclude 'tun0', 'utun0', 'tuntun'
-	# export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_EXCLUDES="^tun0$ ^tun1$" # excludes exactly 'tun0' and 'tun1'
-	# Default:
-	# export TMUX_POWERLINE_SEG_IFSTAT_INTERFACE_EXCLUDES="^u?tun[0-9]+$"
-# }
-
 # kubernetes_context.sh {
 	# Kubernetes config context display mode {"name_namespace", "name", "namespace"}.
 	# export TMUX_POWERLINE_SEG_KUBERNETES_CONTEXT_DISPLAY_MODE="name_namespace"
@@ -148,7 +126,16 @@
 # }
 
 # macos_notification_count.sh {
-
+	# App ids to query in notification center, separated by space
+	# To get the app id that is associated with a specific app run:
+	# sqlite3 -list "/com.apple.notificationcenter/db2/db" 'select * from app'
+	# The first column contains the app ids
+	# The last column contains the message count
+	# "118" is the app id of Messages.app
+	# Only "banner" notifications are supported (see settings in the notification center)
+	export TMUX_POWERLINE_SEG_MACOS_NOTIFICATION_COUNT_APPIDS="118"
+	# Notification symbol
+	export TMUX_POWERLINE_SEG_MACOS_NOTIFICATION_COUNT_CHAR="💬"
 # }
 
 # mailcount.sh {
@@ -172,7 +159,7 @@
 
 	## Maildir
 	# Path to the maildir to check.
-	export TMUX_POWERLINE_SEG_MAILCOUNT_MAILDIR_INBOX="/Users/xo/.mail/inbox/new"
+	export TMUX_POWERLINE_SEG_MAILCOUNT_MAILDIR_INBOX="$HOME/.mail/inbox/new"
 
 	## mbox
 	# Path to the mbox to check.
@@ -180,7 +167,7 @@
 
 	## mailcheck
 	# Optional path to mailcheckrc
-	export TMUX_POWERLINE_SEG_MAILCOUNT_MAILCHECKRC="/Users/xo/.mailcheckrc"
+	export TMUX_POWERLINE_SEG_MAILCOUNT_MAILCHECKRC="$HOME/.mailcheckrc"
 # }
 
 # mode_indicator.sh {
@@ -224,12 +211,6 @@
 	# export TMUX_POWERLINE_SEG_NOW_PLAYING_ROLL_MODE="repeat"
 	# Separator for "repeat" roll mode
 	# export TMUX_POWERLINE_SEG_NOW_PLAYING_ROLL_SEPARATOR="   "
-	# If set to 'true', 'yes', 'on' or '1', played tracks will be logged to a file.
-	# export TMUX_POWERLINE_SEG_NOW_PLAYING_TRACK_LOG_ENABLE="false"
-	# If enabled, log played tracks to the following file:
-	# export TMUX_POWERLINE_SEG_NOW_PLAYING_TRACK_LOG_FILEPATH="/Users/xo/.now_playing.log"
-	# Maximum number of logged song entries. Set to "unlimited" for unlimited entries.
-	# export TMUX_POWERLINE_SEG_NOW_PLAYING_TRACK_LOG_MAX_ENTRIES="100"
 
 	# Hostname for MPD server in the format "[password@]host"
 	export TMUX_POWERLINE_SEG_NOW_PLAYING_MPD_HOST="localhost"
@@ -280,13 +261,13 @@
 	export TMUX_POWERLINE_SEG_TIME_FORMAT="%H:%M"
 	# Change this to display a different timezone than the system default.
 	# Use TZ Identifier like "America/Los_Angeles"
-	# export TMUX_POWERLINE_SEG_TIME_TZ=""
+	export TMUX_POWERLINE_SEG_TIME_TZ=""
 # }
 
 # tmux_mem_cpu_load.sh {
 	# Arguments passed to tmux-mem-cpu-load.
 	# See https://github.com/thewtex/tmux-mem-cpu-load for all available options.
-	# export TMUX_POWERLINE_SEG_TMUX_MEM_CPU_LOAD_ARGS="-v"
+	export TMUX_POWERLINE_SEG_TMUX_MEM_CPU_LOAD_ARGS="-v"
 # }
 
 # tmux_session_info.sh {

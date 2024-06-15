@@ -383,7 +383,7 @@ tmux_conf_urlscan_options="--compact --dedupe"
 # force Vi mode
 #   really you should export VISUAL or EDITOR environment variable, see manual
 #set -g status-keys vi
-#set -g mode-keys vi
+set -g mode-keys vi
 
 # replace C-b by C-a instead of using both prefixes
 # set -gu prefix2
@@ -438,21 +438,9 @@ tmux_conf_uninstall_plugins_on_reload=true
 set -g @plugin 'tmux-plugins/tmux-copycat'
 set -g @plugin 'tmux-plugins/tmux-cpu'
 set -g @plugin 'tmux-plugins/tmux-open'
-set -g @plugin 'tmux-plugins/tmux-resurrect'
-set -g @plugin 'tmux-plugins/tmux-continuum'
-set -g @plugin 'erikw/tmux-powerline'
 set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-yank'
-set -g @plugin 'tmux-plugins/tpm'
-
-set -g @continuum-restore 'on'
-
-set -g mode-keys vi
-
-set -g @resurrect-strategy-vim 'session'
-set -g @resurrect-capture-pane-contents 'on'
-
-
+set -g @plugin 'erikw/tmux-powerline'
 
 # remove delay
 set -sg escape-time 1
