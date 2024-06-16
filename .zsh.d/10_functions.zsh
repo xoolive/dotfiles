@@ -6,37 +6,37 @@ compdef '_files -g "*.svg"' svg2pdf
 
 # Escape UTF-8 characters into their 3-byte format
 function escape() {
-	printf "\\\x%s" $(printf "$@" | xxd -p -c1 -u)
-	# print a newline unless we’re piping the output to another program
-	if [ -t 1 ]; then
-		echo # newline
-	fi
+    printf "\\\x%s" $(printf "$@" | xxd -p -c1 -u)
+    # print a newline unless we’re piping the output to another program
+    if [ -t 1 ]; then
+        echo # newline
+    fi
 }
 
 # Decode \x{ABCD}-style Unicode escape sequences
 function unidecode() {
-	perl -e "binmode(STDOUT, ':utf8'); print \"$@\""
-	# print a newline unless we’re piping the output to another program
-	if [ -t 1 ]; then
-		echo # newline
-	fi
+    perl -e "binmode(STDOUT, ':utf8'); print \"$@\""
+    # print a newline unless we’re piping the output to another program
+    if [ -t 1 ]; then
+        echo # newline
+    fi
 }
 
 # Get a character’s Unicode code point
 function codepoint() {
-	perl -e "use utf8; print sprintf('U+%04X', ord(\"$@\"))"
-	# print a newline unless we’re piping the output to another program
-	if [ -t 1 ]; then
-		echo # newline
-	fi
+    perl -e "use utf8; print sprintf('U+%04X', ord(\"$@\"))"
+    # print a newline unless we’re piping the output to another program
+    if [ -t 1 ]; then
+        echo # newline
+    fi
 }
 
 
 # Manually remove a downloaded app or file from the quarantine
 function unquarantine() {
-	for attribute in com.apple.metadata:kMDItemDownloadedDate com.apple.metadata:kMDItemWhereFroms com.apple.quarantine; do
-		xattr -r -d "$attribute" "$@"
-	done
+    for attribute in com.apple.metadata:kMDItemDownloadedDate com.apple.metadata:kMDItemWhereFroms com.apple.quarantine; do
+        xattr -r -d "$attribute" "$@"
+    done
 }
 
 
@@ -45,33 +45,33 @@ function unquarantine() {
 # `less` with options to preserve color and line numbers, unless the output is
 # small enough for one screen.
 tre() {
-	  tree -aC -I '.git' --dirsfirst "$@" | less -FRNX
+      tree -aC -I '.git' --dirsfirst "$@" | less -FRNX
 }
 
 
 # Get colors in manual pages
 man() {
-	  env \
-		    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-		    LESS_TERMCAP_md=$(printf "\e[1;31m") \
-		    LESS_TERMCAP_me=$(printf "\e[0m") \
-		    LESS_TERMCAP_se=$(printf "\e[0m") \
-		    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-		    LESS_TERMCAP_ue=$(printf "\e[0m") \
-		    LESS_TERMCAP_us=$(printf "\e[1;32m") \
-		    man "$@"
+      env \
+            LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+            LESS_TERMCAP_md=$(printf "\e[1;31m") \
+            LESS_TERMCAP_me=$(printf "\e[0m") \
+            LESS_TERMCAP_se=$(printf "\e[0m") \
+            LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+            LESS_TERMCAP_ue=$(printf "\e[0m") \
+            LESS_TERMCAP_us=$(printf "\e[1;32m") \
+            man "$@"
 }
 
 
 # check if uri is up
 isup() {
-	  local uri=$1
+      local uri=$1
 
-	  if curl -s --head  --request GET "$uri" | grep "200 OK" > /dev/null ; then
-		    notify-send --urgency=critical "$uri is down"
-	  else
-		    notify-send --urgency=low "$uri is up"
-	  fi
+      if curl -s --head  --request GET "$uri" | grep "200 OK" > /dev/null ; then
+            notify-send --urgency=critical "$uri is down"
+      else
+            notify-send --urgency=low "$uri is up"
+      fi
 }
 
 

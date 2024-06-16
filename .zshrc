@@ -61,17 +61,24 @@ plugins=(
     dotenv
     extract
     eza
-    git
+    fd
+    fzf  # ctrl-t
+    gh
+    gitfast
+    git-auto-fetch
     gitignore
     macos
     npm
     nvm
     pip
+    podman
     poetry
     poetry-env
+    procs
     qrcode
     rust
     rye
+    ssh-agent
     ssh
     sudo
     tmux

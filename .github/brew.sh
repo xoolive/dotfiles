@@ -28,6 +28,7 @@ brew install chruby ruby-install xz
 brew install dua-cli  # https://github.com/Byron/dua-cli (replace ncdu)
 brew install eza  # https://github.com/eza-community/eza (replace ls)
 brew install fzf  # https://github.com/sharkdp/fd (replace find)
+brew install gh
 brew install git-delta  # https://github.com/dandavison/delta  (replace diff)
 brew install go
 brew install htop  # (replace top)
@@ -42,6 +43,7 @@ brew install pandoc
 brew install pdftk-java
 brew install pipx
 brew install pkg-config
+brew install podman
 brew install tesseract
 brew install the_silver_searcher  # ag: https://github.com/ggreer/the_silver_searcher
 brew install tealdeer  # tldr
