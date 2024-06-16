@@ -29,6 +29,8 @@ A description of how to install environments for several programming languages a
 
   I use a specific French variant of the Dvorak keyboard layout (no, not bépo), and like to use Caps Lock as an extra Ctrl key. All the settings are described in [xoolive/dvorak-fr](https://github.com/xoolive/dvorak-fr).
 
+  Read more about it in the [Dvorak zine](https://www.dvzine.org/)
+
 
 ## Setup
 
