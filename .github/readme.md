@@ -13,6 +13,7 @@ A description of how to install environments for several programming languages a
 - `go.sh` for the Golang environment (installed through brew)
 - `javascript.sh` for the Volta environment
 - `latex.sh` for a lightweight LaTeX installation (MacOS)
+- `ocaml.sh` for the opam environment
 - `python.sh` for Python and pipx tools
 - `rust.sh` for the Rust tool suite (Linux)
 

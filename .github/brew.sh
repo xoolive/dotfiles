@@ -9,15 +9,17 @@ echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to \$PATH.
 # Cask installations
 
 brew install --cask calibre
-brew install --cask font-iosevka
 brew install --cask font-fira-mono-for-powerline
+brew install --cask font-iosevka
 brew install --cask font-menlo-for-powerline
 brew install --cask font-monaspace
 brew install --cask macvim
-brew install --cask transmission
-brew install --cask zotero
-brew install --cask zoom
 brew install --cask mongodb-compass
+brew install --cask ollama
+brew install --cask transmission
+brew install --cask wezterm
+brew install --cask zoom
+brew install --cask zotero
 
 # Standard installations
 
@@ -37,6 +39,7 @@ brew install jless
 brew install jq
 brew install just
 brew install libarchive
+brew install links
 brew install neofetch
 brew install nushell
 brew install pandoc

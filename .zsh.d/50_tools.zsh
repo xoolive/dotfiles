@@ -18,9 +18,6 @@ eval "$(zoxide init zsh)"
 # configuration in ~/.config/atuin/config.toml
 eval "$(atuin init zsh --disable-up-arrow)"
 
-# replacement for ps (completion)
-source <(procs --gen-completion-out zsh)
-
 # -- pixi (replacement for conda) --
 export PATH="$HOME/.pixi/bin:$PATH"
 eval "$(pixi completion --shell zsh)"
