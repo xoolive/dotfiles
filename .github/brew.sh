@@ -29,9 +29,11 @@ brew install broot  # https://github.com/Canop/broot (replace tree)
 brew install chruby ruby-install xz
 brew install dua-cli  # https://github.com/Byron/dua-cli (replace ncdu)
 brew install eza  # https://github.com/eza-community/eza (replace ls)
+brew install fdupes
 brew install fzf  # https://github.com/sharkdp/fd (replace find)
 brew install gh
 brew install git-delta  # https://github.com/dandavison/delta  (replace diff)
+brew install git-lfs
 brew install go
 brew install htop  # (replace top)
 brew install jet1090
@@ -47,14 +49,16 @@ brew install pdftk-java
 brew install pipx
 brew install pkg-config
 brew install podman
+brew install socat
 brew install tesseract
-brew install the_silver_searcher  # ag: https://github.com/ggreer/the_silver_searcher
 brew install tealdeer  # tldr
 brew install tmux
+brew install the_silver_searcher  # ag: https://github.com/ggreer/the_silver_searcher
 brew install transmission-cli
 brew install tree
 brew install uv
 brew install wget
+brew install xh  # http requests
 brew install xoolive/homebrew/jet1090
 brew install yt-dlp
 brew install zoxide

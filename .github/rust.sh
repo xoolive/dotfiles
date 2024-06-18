@@ -1,6 +1,8 @@
 # Install Rustup
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
+cargo install cargo-release
+
 # Install tools (Linux)
 # Most of these tools have installers for already compiled versions
 # Check the github for detailed instructions
@@ -14,4 +16,5 @@ cargo install jless
 cargo install just  # (replace make)
 cargo install procs  # (replace ps)
 cargo install tealdeer  # tldr
+cargo install xh  # http requests
 cargo install zoxide  # (replace cd)
