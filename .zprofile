@@ -10,7 +10,16 @@ fi
 . "$HOME/.cargo/env"
 
 # -- opam (Ocaml) --
-eval "$(opam env --switch=default)"
+if command -v opam >/dev/null 2>&1; then
+    eval "$(opam env --switch=default)"
+fi
+
+
+# atuin
+# (among the possibilities to install atuin...)
+if [[ -d $HOME/.atuin/bin ]]; then
+    export PATH="$PATH:$HOME/.atuin/bin/"
+fi
 
 # -- rye (Python) --
 # . "$HOME/.rye/env"

@@ -1,7 +1,7 @@
 # find folders where virtualenvs are located and source them
 
 POETRY_PATH=$(poetry config virtualenvs.path || "")
-PIPX_PATH=$(pipx list | grep venvs | sed "s/ /\n/g" | tail -n 1 || "")
+PIPX_PATH=$(pipx list 2>/dev/null | grep venvs | sed "s/ /\n/g" | tail -n 1 || "")
 
 function activate {
     if [[ -z $1 ]]; then
