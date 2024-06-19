@@ -7,7 +7,9 @@ if [[ $(uname -s) = "Darwin" ]]; then
 fi
 
 # -- cargo --
-. "$HOME/.cargo/env"
+if [[ -d $HOME/.cargo ]]; then
+    . "$HOME/.cargo/env"
+fi
 
 # -- opam (Ocaml) --
 if command -v opam >/dev/null 2>&1; then
