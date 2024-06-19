@@ -5,8 +5,27 @@ I synchronize this folder across several MacOS and Linux computers, even if ther
 - the [Homebrew](https://brew.sh) approach for MacOS;
 - a more _compile what you need_ approach with Linux (mostly `cargo install` based).
 
-My principal shell is zsh, parametrized with [oh-my-zsh](https://ohmyz.sh/) and the [Spaceship Prompt](https://github.com/spaceship-prompt/spaceship-prompt)
+Before starting:
 
+- My principal shell is **zsh**, parametrized with [oh-my-zsh](https://ohmyz.sh/):
+  - install the [Spaceship Prompt](https://github.com/spaceship-prompt/spaceship-prompt);
+  - install [zsh-completions](https://github.com/zsh-users/zsh-completions);
+  - install [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting).
+
+  ```zsh
+  git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM}/plugins/zsh-completions
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting
+  git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
+  ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+  ```
+
+- My principal terminal editor is **vim**, equipped with [Vundle](https://github.com/VundleVim/Vundle.vim) for plugin management:
+
+  ```zsh
+  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/vundle
+  vim +qPluginInstall +qall
+  ```
+  
 A description of how to install environments for several programming languages are available in the `.github` folder:
 
 - `brew.sh` for the installed Homebrew packages (MacOS)
