@@ -5,6 +5,13 @@ cargo install cargo-release
 
 # Install tools (Linux)
 # Most of these tools have installers for already compiled versions
+
+# Useful for .zprofile
+#
+# atuin: check https://atuin.sh
+# eza: check https://github.com/eza-community/eza
+# zoxide: https://github.com/ajeetdsouza/zoxide
+
 # Check the github for detailed instructions
 
 cargo install atuin  # (replace history)
