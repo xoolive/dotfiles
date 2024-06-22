@@ -28,6 +28,7 @@ brew install bat  # https://github.com/sharkdp/bat (replace cat)
 brew install broot  # https://github.com/Canop/broot (replace tree)
 brew install chruby ruby-install xz
 brew install dua-cli  # https://github.com/Byron/dua-cli (replace ncdu)
+brew install duckdb
 brew install eza  # https://github.com/eza-community/eza (replace ls)
 brew install fdupes
 brew install fzf  # https://github.com/sharkdp/fd (replace find)
