@@ -13,7 +13,7 @@ fi
 
 # -- opam (Ocaml) --
 if command -v opam >/dev/null 2>&1; then
-    eval "$(opam env --switch=default)"
+    eval "$(opam env)"
 fi
 
 

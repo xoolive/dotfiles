@@ -13,6 +13,7 @@ brew install --cask font-fira-mono-for-powerline
 brew install --cask font-iosevka
 brew install --cask font-menlo-for-powerline
 brew install --cask font-monaspace
+brew install --cask font-monaspace-nerd-font
 brew install --cask macvim
 brew install --cask mongodb-compass
 brew install --cask ollama
@@ -27,6 +28,7 @@ brew install autossh
 brew install bat  # https://github.com/sharkdp/bat (replace cat)
 brew install broot  # https://github.com/Canop/broot (replace tree)
 brew install chruby ruby-install xz
+brew install cmake
 brew install dua-cli  # https://github.com/Byron/dua-cli (replace ncdu)
 brew install duckdb
 brew install eza  # https://github.com/eza-community/eza (replace ls)
@@ -51,6 +53,7 @@ brew install pipx
 brew install pkg-config
 brew install podman
 brew install socat
+brew install sox
 brew install tesseract
 brew install tealdeer  # tldr
 brew install tmux

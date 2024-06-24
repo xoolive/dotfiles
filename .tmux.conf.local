@@ -441,6 +441,7 @@ set -g @plugin 'tmux-plugins/tmux-open'
 set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'erikw/tmux-powerline'
+set -g @plugin 'laktak/extrakto'
 
 # remove delay
 set -sg escape-time 1
