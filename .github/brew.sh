@@ -13,7 +13,7 @@ brew install --cask font-fira-mono-for-powerline
 brew install --cask font-iosevka
 brew install --cask font-menlo-for-powerline
 brew install --cask font-monaspace
-brew install --cask font-monaspace-nerd-font
+brew install --cask font-monaspace-nerd-font  # https://github.com/ryanoasis/nerd-fonts
 brew install --cask macvim
 brew install --cask mongodb-compass
 brew install --cask ollama
@@ -29,10 +29,12 @@ brew install bat  # https://github.com/sharkdp/bat (replace cat)
 brew install broot  # https://github.com/Canop/broot (replace tree)
 brew install chruby ruby-install xz
 brew install cmake
+brew install ctags
 brew install dua-cli  # https://github.com/Byron/dua-cli (replace ncdu)
 brew install duckdb
 brew install eza  # https://github.com/eza-community/eza (replace ls)
 brew install fdupes
+brew install ffmpeg
 brew install fzf  # https://github.com/sharkdp/fd (replace find)
 brew install gh
 brew install git-delta  # https://github.com/dandavison/delta  (replace diff)
@@ -61,8 +63,10 @@ brew install the_silver_searcher  # ag: https://github.com/ggreer/the_silver_sea
 brew install transmission-cli
 brew install tree
 brew install uv
+brew install websocat
 brew install wget
 brew install xh  # http requests
 brew install xoolive/homebrew/jet1090
 brew install yt-dlp
+brew install zed
 brew install zoxide
