@@ -125,3 +125,5 @@ source $ZSH/oh-my-zsh.sh
 for zshrc_snipplet in ~/.zsh.d/[0-9][0-9]*[^~] ; do
     source $zshrc_snipplet
 done
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

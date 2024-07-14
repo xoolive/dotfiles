@@ -21,3 +21,6 @@ eval "$(atuin init zsh --disable-up-arrow)"
 # -- pixi (replacement for conda) --
 export PATH="$HOME/.pixi/bin:$PATH"
 eval "$(pixi completion --shell zsh)"
+
+# -- jet1090 (completion) --
+eval "$(jet1090 --completion zsh)"
