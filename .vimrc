@@ -11,64 +11,73 @@ scriptencoding utf-8
 set nocompatible    " no compatibility with legacy vi
 filetype off
 
-set runtimepath+=~/.vim/bundle/vundle/
-call vundle#begin()
 
-" required first
-Plugin 'gmarik/vundle'
+" Automatic installation for vim-plug
+"
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+
+call plug#begin('~/.vim/bundle')
+
 
 " Look and feel
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'junegunn/seoul256.vim'
-Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plugin 'junegunn/fzf.vim'              " fzf is the new ctrl-p
-Plugin 'rking/ag.vim'                  " Support for ag (ag is the new ack)
-
-Plugin 'majutsushi/tagbar'             " Add the tagbar
-Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'altercation/vim-colors-solarized'
+Plug 'rking/ag.vim'                     " Support for ag (ag is the new ack)
+Plug 'preservim/tagbar'                 " Add the tagbar
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " -- tpope --
 "
-Plugin 'tpope/vim-eunuch.git'          " Access to Remove, Rename, Mkdir, etc.
-Plugin 'tpope/vim-surround.git'        " Add support to s in csb[, etc.
-Plugin 'tpope/vim-repeat.git'          " I need to repeat those!
-Plugin 'tpope/vim-fugitive.git'        " Working with git
-Plugin 'airblade/vim-gitgutter'
-Plugin 'tpope/vim-speeddating'         " Increment dates
+Plug 'tpope/vim-eunuch'          " Access to Remove, Rename, Mkdir, etc.
+Plug 'tpope/vim-surround'        " Add support to s in csb[, etc.
+Plug 'tpope/vim-repeat'          " I need to repeat those!
+Plug 'tpope/vim-fugitive'        " Working with git
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-speeddating'         " Increment dates
+
+" -- junegunn --
+
+Plug 'junegunn/seoul256.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'              " fzf is the new ctrl-p
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'junegunn/vim-easy-align'
 
 " -- misc. --
-Plugin 'vim-scripts/utl.vim'           " urls
-Plugin 'godlygeek/tabular.git'         " csv-like alignment
+Plug 'vim-scripts/utl.vim'           " urls
+Plug 'godlygeek/tabular'         " csv-like alignment
 
 " -- programming --
 "
 let g:polyglot_disabled = ['latex']
-Plugin 'sheerun/vim-polyglot'          " support for maaaany languages
-Plugin 'lervag/vimtex'
+Plug 'sheerun/vim-polyglot'          " support for maaaany languages
+Plug 'lervag/vimtex'
 
-Plugin 'dense-analysis/ale'            " async version of syntastic
+Plug 'dense-analysis/ale'            " async version of syntastic
 
-Plugin 'vim-scripts/a.vim'             " Good old switch :A for C/C++
+Plug 'vim-scripts/a.vim'             " Good old switch :A for C/C++
 
 " Easymotion
-Plugin 'easymotion/vim-easymotion'
+Plug 'easymotion/vim-easymotion'
+" markdown
+Plug 'preservim/vim-markdown'
 " csv
-Plugin 'chrisbra/csv.vim'
+Plug 'chrisbra/csv.vim'
+" rust
+Plug 'rust-lang/rust.vim'
+" ,K
+Plug 'keith/investigate.vim'
 
-" Alloy
-" Plugin 'runoshun/vim-alloy'
-"
-" Coq
-"Plugin 'let-def/vimbufsync'
-"Plugin 'the-lambda-church/coquille'
+call plug#end()
 
-call vundle#end()
-
-syntax on                      " syntax hilighting
-filetype plugin indent on      " enable filetype detection
 behave xterm                   " do not use this stupid select mode
 
 "
@@ -244,13 +253,7 @@ highlight link DoubleSpace MoreMsg
 " theme
 
 colorscheme seoul256
-
-if has("gui_running")
-    let g:seoul256_background = 234
-    let g:airline_theme='lessnoise'
-else
-    let g:airline_theme='lessnoise'
-endif
+let g:airline_theme='lessnoise'
 
 "
 " function
@@ -333,14 +336,14 @@ let g:ale_fixers = {
 let g:ale_python_auto_poetry = 1
 let g:ale_fix_on_save = 1
 
-let g:airline#extensions#hunks#non_zero_only = 1
-let g:airline#extensions#virtualenv#enabled = 1
+let g:airline#extensions#hunks#non_zero_only   = 1
+let g:airline#extensions#virtualenv#enabled    = 1
 
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#ale#error_symbol = 'E:'
-let g:airline#extensions#ale#warning_symbol = 'W:'
+let g:airline_powerline_fonts                  = 1
+let g:airline#extensions#ale#error_symbol      = 'E:'
+let g:airline#extensions#ale#warning_symbol    = 'W:'
 let g:airline#extensions#ale#show_line_numbers = 1
-let g:airline#extensions#ale#open_lnum_symbol = '(L'
+let g:airline#extensions#ale#open_lnum_symbol  = '(L'
 let g:airline#extensions#ale#close_lnum_symbol = ')'
 
 if !exists('g:airline_symbols')
@@ -348,27 +351,29 @@ if !exists('g:airline_symbols')
 endif
 
 " unicode symbols
-let g:airline_symbols.crypt = '🔒'
-let g:airline_symbols.colnr = ' :'
-let g:airline_symbols.linenr = ' ㏑ '
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.notexists = 'Ɇ'
+let g:airline_symbols.crypt      = '🔒'
+let g:airline_symbols.colnr      = ' :'
+let g:airline_symbols.linenr     = ' ㏑ '
+let g:airline_symbols.maxlinenr  = ''
+let g:airline_symbols.paste      = 'ρ'
+let g:airline_symbols.paste      = 'Þ'
+let g:airline_symbols.paste      = '∥'
+let g:airline_symbols.spell      = 'Ꞩ'
+let g:airline_symbols.notexists  = 'Ɇ'
 let g:airline_symbols.whitespace = 'Ξ'
 
 " powerline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
+let g:airline_left_sep         = ''
+let g:airline_left_alt_sep     = ''
+let g:airline_right_sep        = ''
+let g:airline_right_alt_sep    = ''
+let g:airline_symbols.branch   = ''
 let g:airline_symbols.readonly = ''
 
 let g:clang_snippets               = 0
 let g:clang_snippets_engine        = ''
+
+let g:vim_markdown_folding_disabled = 1
 
 if has('gui_running')
     set lines=55

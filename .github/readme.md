@@ -62,12 +62,7 @@ The settings are based for my environment with:
   Optional plugins: [spaceship](https://github.com/spaceship-prompt/spaceship-prompt) (prompt), [zsh-completions](https://github.com/zsh-users/zsh-completions) and [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting).
 
 - **vim** as a principal terminal editor  
-  [Vundle](https://github.com/VundleVim/Vundle.vim) for plugin management
-
-  ```zsh
-  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/vundle
-  vim +qPluginInstall +qall
-  ```
+  [vim-plug](https://github.com/junegunn/vim-plug) for plugin management
 
 Useful for copy-pasting:
 
