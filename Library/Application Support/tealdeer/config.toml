@@ -36,3 +36,4 @@ auto_update = true
 auto_update_interval_hours = 720
 
 [directories]
+custom_pages_dir = "/Users/xo/.local/share/tealdeer/pages/"

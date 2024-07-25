@@ -41,6 +41,7 @@ brew install git-delta  # https://github.com/dandavison/delta  (replace diff)
 brew install git-lfs
 brew install go
 brew install htop  # (replace top)
+brew install imagemagick
 brew install jet1090
 brew install jless
 brew install jq
@@ -57,9 +58,9 @@ brew install podman
 brew install socat
 brew install sox
 brew install tesseract
-brew install tealdeer  # tldr
+# brew install tealdeer  # outdated release, clone and compile
 brew install tmux
-brew install the_silver_searcher  # ag: https://github.com/ggreer/the_silver_searcher
+brew install the_silver_searcher  # ag
 brew install transmission-cli
 brew install tree
 brew install uv
@@ -68,5 +69,5 @@ brew install wget
 brew install xh  # http requests
 brew install xoolive/homebrew/jet1090
 brew install yt-dlp
-brew install zed
+brew install zig
 brew install zoxide

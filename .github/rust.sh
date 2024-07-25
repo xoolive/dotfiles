@@ -22,6 +22,6 @@ cargo install eza  # (replace ls)
 cargo install jless
 cargo install just  # (replace make)
 cargo install procs  # (replace ps)
-cargo install tealdeer  # tldr
+# cargo install tealdeer  # outdated release, clone and compile
 cargo install xh  # http requests
 cargo install zoxide  # (replace cd)
