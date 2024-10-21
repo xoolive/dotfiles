@@ -2,6 +2,7 @@ import readline
 import rlcompleter
 import atexit
 import os
+import re
 import sys
 
 readline.parse_and_bind('tab: complete')
@@ -16,27 +17,72 @@ atexit.register(readline.write_history_file, histfile)
 
 del histfile
 del atexit, readline, rlcompleter
-# leaving sys, os and adding a few other useful
 
-import re
+def autoimport(*modules):
+    autoimported = set()
+    for module in modules:
+        if module.endswith(".*"):
+            base = module[:-2]
+            try:
+                exec(
+                    f"from {base} import *",
+                    globals(),
+                    globals(),
+                )
+            except ImportError:
+                print(f"Failed to import {module}")
+            else:
+                autoimported.add(module)
+        elif "." in module:
+            base, name = module.rsplit(".", 1)
+            try:
+                exec(
+                    f"from {base} import {name}",
+                    globals(),
+                    globals(),
+                )
+            except ImportError:
+                print(f"Failed to import {module}")
+            else:
+                autoimported.add(module)
+        else:
+            try:
+                exec(
+                    f"import {module}",
+                    globals(),
+                    globals(),
+                )
+            except ImportError:
+                print(f"Failed to import {module}")
+            else:
+                autoimported.add(module)
 
-__autoimported__ = ['sys', 'os', 're']
 
-try:
-    from pathlib import Path
-    __autoimported__.append('Path')
-    import numpy as np
-    __autoimported__.append("numpy as np")
-    import pandas as pd
-    __autoimported__.append("pandas as pd")
-    from rich import pretty
-    pretty.install()
-    del pretty
-    from rich import traceback
-    traceback.install()
-    del traceback
-except ImportError:
-    pass
+    print('Auto-imported for your convenience:')
+    print(', '.join(sorted(autoimported)))
 
-print('Auto-imported for your convenience:')
-print(', '.join(__autoimported__))
+if not os.environ.get("PYTHON_NOIMPORT"):
+    autoimport(
+        "sys",
+        "os",
+        "re",
+        "functools",
+        "asyncio",
+        "typing.*",
+        "pathlib.Path",
+        "dataclasses.dataclass",
+        "numpy as np",
+        "pandas as pd"
+    )
+
+
+# try:
+#     from rich import pretty
+#     pretty.install()
+#     del pretty
+#     from rich import traceback
+#     traceback.install()
+#     del traceback
+# except ImportError:
+#     pass
+
