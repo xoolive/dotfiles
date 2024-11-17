@@ -58,12 +58,11 @@ plugins=(
     command-not-found
     compleat
     docker
-    dotenv
     extract
     eza
-    fd
     fzf  # ctrl-t
     gh
+    git
     gitfast
     git-auto-fetch
     gitignore
@@ -77,11 +76,11 @@ plugins=(
     procs
     qrcode
     rust
-    # rye
     ssh-agent
     ssh
     sudo
     tmux
+    uv
     volta
     web-search
     zoxide

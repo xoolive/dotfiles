@@ -442,6 +442,9 @@ set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'erikw/tmux-powerline'
 set -g @plugin 'laktak/extrakto'
+set -g @plugin 'Morantron/tmux-fingers'
+
+set -g @fingers-key j
 
 # remove delay
 set -sg escape-time 1

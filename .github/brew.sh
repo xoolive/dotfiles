@@ -14,10 +14,12 @@ brew install --cask font-iosevka
 brew install --cask font-menlo-for-powerline
 brew install --cask font-monaspace
 brew install --cask font-monaspace-nerd-font  # https://github.com/ryanoasis/nerd-fonts
+brew install --cask font-caskaydia-cove-nerd-font
 brew install --cask macvim
 brew install --cask mongodb-compass
 brew install --cask ollama
 brew install --cask transmission
+brew install --cask vlc
 brew install --cask wezterm
 brew install --cask zoom
 brew install --cask zotero
@@ -45,18 +47,23 @@ brew install imagemagick
 brew install jet1090
 brew install jless
 brew install jq
+brew install juliaup
 brew install just
 brew install libarchive
 brew install links
 brew install neofetch
 brew install nushell
+brew install nvim
 brew install pandoc
 brew install pdftk-java
-brew install pipx
 brew install pkg-config
 brew install podman
+brew install podman-desktop
+brew install protobuf
+brew install quarto
 brew install socat
 brew install sox
+brew install telnet
 brew install tesseract
 # brew install tealdeer  # outdated release, clone and compile
 brew install tmux
@@ -67,7 +74,11 @@ brew install uv
 brew install websocat
 brew install wget
 brew install xh  # http requests
-brew install xoolive/homebrew/jet1090
 brew install yt-dlp
 brew install zig
 brew install zoxide
+brew install 7zip
+
+brew install xoolive/homebrew/jet1090
+brew install xoolive/homebrew/decode1090
+brew install axodotdev/tap/cargo-dist

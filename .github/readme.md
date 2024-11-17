@@ -12,7 +12,7 @@ A description of how to install several environments are available in the `.gith
 - `javascript.sh` for the Volta environment
 - `latex.sh` for a lightweight LaTeX installation (MacOS)
 - `ocaml.sh` for the opam environment
-- `python.sh` for Python and pipx tools
+- `python.sh` for Python and uv tools
 - `rust.sh` for the Rust tool suite (Linux)
 
 ## Miscellaneous
