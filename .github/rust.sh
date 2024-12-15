@@ -1,6 +1,9 @@
 # Install Rustup
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
+rustup upgrade
+rustup component add rust-analyzer
+
 cargo install cargo-release
 
 # Install tools (Linux)

@@ -9,6 +9,7 @@ echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to \$PATH.
 # Cask installations
 
 brew install --cask calibre
+brew install --cask drawio
 brew install --cask font-fira-mono-for-powerline
 brew install --cask font-iosevka
 brew install --cask font-menlo-for-powerline
@@ -34,6 +35,7 @@ brew install cmake
 brew install ctags
 brew install dua-cli  # https://github.com/Byron/dua-cli (replace ncdu)
 brew install duckdb
+brew install espanso  # https://espanso.org/
 brew install eza  # https://github.com/eza-community/eza (replace ls)
 brew install fdupes
 brew install ffmpeg
@@ -42,15 +44,20 @@ brew install gh
 brew install git-delta  # https://github.com/dandavison/delta  (replace diff)
 brew install git-lfs
 brew install go
+brew install helix
 brew install htop  # (replace top)
 brew install imagemagick
 brew install jet1090
 brew install jless
+brew install jordanbaird-ice  # https://github.com/jordanbaird/Ice
+brew install jnv  # jq-based interactive tool
 brew install jq
 brew install juliaup
 brew install just
 brew install libarchive
 brew install links
+brew install ltex-ls
+brew install marksman  # lsp for Markdown
 brew install neofetch
 brew install nushell
 brew install nvim
@@ -63,6 +70,7 @@ brew install protobuf
 brew install quarto
 brew install socat
 brew install sox
+brew install taplo  # linter for toml
 brew install telnet
 brew install tesseract
 # brew install tealdeer  # outdated release, clone and compile
@@ -71,14 +79,17 @@ brew install the_silver_searcher  # ag
 brew install transmission-cli
 brew install tree
 brew install uv
+brew install watchexec
 brew install websocat
 brew install wget
 brew install xh  # http requests
 brew install yt-dlp
 brew install zig
+brew install zls
 brew install zoxide
 brew install 7zip
 
 brew install xoolive/homebrew/jet1090
 brew install xoolive/homebrew/decode1090
 brew install axodotdev/tap/cargo-dist
+brew install f1bonacc1/tap/process-compose

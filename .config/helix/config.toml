@@ -1,0 +1,4 @@
+theme = "sonokai"
+
+[editor.lsp]
+display-inlay-hints = true

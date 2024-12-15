@@ -1,0 +1,54 @@
+[language-server.rust-analyzer.config.check]
+command = "clippy"
+
+[[language]]
+name = "c"
+auto-format = true
+
+[[language]]
+name = "markdown"
+auto-format = true
+language-servers = [ "marksman", "ltex-ls" ]
+
+[[language]]
+name = "python"
+roots = ["pyproject.toml", "poetry.lock", "uv.lock", ".venv/"]
+language-servers = ["pyright", "ruff", "pylsp"]
+auto-format = true
+
+[language-server.pyright]
+command = "uv"
+args = ["run", "pyright-langserver", "--stdio"]
+
+[language-server.ruff]
+command = "uv"
+args = ["run", "ruff", "server"]
+
+[language-server.ruff.config.settings]
+lineLength = 80
+
+format.preview = true
+format.quote-style = "double"
+format.docstring-code-format = true
+format.indent-style = "space"
+lint.preview = true
+
+[language-server.pylsp.config.pylsp]
+plugins.pylsp_mypy.enabled = true
+plugins.pylsp_mypy.dmypy = true
+plugins.pylsp_mypy.dmypy_command = ["uv", "run", "dmypy"]
+
+[[language]]
+name = "toml"
+formatter = { command = "taplo", args = ["fmt", "-"] }
+
+[[language]]
+name = "vue"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "vue"] }
+language-servers = ["typescript-language-server"]
+
+[[language-server.typescript-language-server.config.plugins]]
+name = "@vue/typescript-plugin"
+location = "~/.volta/tools/image/packages/@vue/language-server/"
+languages = ["vue"]
