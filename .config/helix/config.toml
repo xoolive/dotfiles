@@ -1,4 +1,19 @@
 theme = "sonokai"
 
+[editor]
+color-modes = true
+soft-wrap.enable = true
+rulers = [80, 100]
+
 [editor.lsp]
+display-messages = true
 display-inlay-hints = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.statusline]
+left = ["mode", "spinner", "file-name"]
+right = ["version-control", "position", "file-encoding", "file-type"]

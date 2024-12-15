@@ -1,26 +1,27 @@
 ## Version controlled .dotfiles
 
-I synchronize this folder across several MacOS and Linux computers, even if there are different approaches to deal with installations:
+I synchronize this folder across several macOS and Linux computers, even if there are different approaches to deal with installations:
 
-- the [Homebrew](https://brew.sh) approach for MacOS;
+- the [Homebrew](https://brew.sh) approach for macOS;
 - a more _compile what you need_ approach with Linux (mostly `cargo install` based).
 
 A description of how to install several environments are available in the `.github` folder:
 
-- `brew.sh` for the installed Homebrew packages (MacOS)
+- `brew.sh` for the installed Homebrew packages (macOS)
 - `go.sh` for the Golang environment (installed through brew)
-- `javascript.sh` for the Volta environment
-- `latex.sh` for a lightweight LaTeX installation (MacOS)
+- `volta.sh` for the Volta (Javascript) environment
+- `latex.sh` for a lightweight LaTeX installation (macOS)
 - `ocaml.sh` for the opam environment
 - `python.sh` for Python and uv tools
 - `rust.sh` for the Rust tool suite (Linux)
 
 ## Miscellaneous
 
-- Use TouchID for sudo (MacOS)
+- Use TouchID for sudo (macOS), in /etc/pam.d/
 
   ```sh
-  # in /etc/pam.d/sudo, after pam_smartcard.so
+  # sudo_local: local config file which survives system update and is included for sudo
+  # uncomment following line to enable Touch ID for sudo
   auth       sufficient     pam_tid.so
   ```
 
