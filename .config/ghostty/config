@@ -1,0 +1,12 @@
+font-family = "CaskaydiaCove Nerd Font Mono"
+font-size = 11
+# font-thicken = true
+
+macos-titlebar-style = transparent
+macos-option-as-alt = right
+
+# theme = "Raycast_Dark"
+theme = "catppuccin-mocha"
+
+# keybind = ctrl+z=close_surface
+# keybind = ctrl+d=new_split:right
