@@ -9,6 +9,7 @@ echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to \$PATH.
 # Cask installations
 
 brew install --cask calibre
+brew install --cask cyberduck
 brew install --cask drawio
 brew install --cask font-fira-mono-for-powerline
 brew install --cask font-iosevka
@@ -16,6 +17,8 @@ brew install --cask font-menlo-for-powerline
 brew install --cask font-monaspace
 brew install --cask font-monaspace-nerd-font  # https://github.com/ryanoasis/nerd-fonts
 brew install --cask font-caskaydia-cove-nerd-font
+brew install --cask ghostty
+brew install --cask gimp
 brew install --cask macvim
 brew install --cask mongodb-compass
 brew install --cask ollama
@@ -35,7 +38,6 @@ brew install cmake
 brew install ctags
 brew install dua-cli  # https://github.com/Byron/dua-cli (replace ncdu)
 brew install duckdb
-brew install espanso  # https://espanso.org/
 brew install eza  # https://github.com/eza-community/eza (replace ls)
 brew install fdupes
 brew install ffmpeg
@@ -83,6 +85,7 @@ brew install watchexec
 brew install websocat
 brew install wget
 brew install xh  # http requests
+brew install yazi ripgrep poppler  # with useful dependencies
 brew install yt-dlp
 brew install zig
 brew install zls
