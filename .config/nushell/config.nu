@@ -897,3 +897,5 @@ $env.config = {
         }
     ]
 }
+
+use ~/.config/jet1090/completions.nu *
