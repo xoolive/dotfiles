@@ -1,9 +1,14 @@
 # Install Rustup
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
+
+# wasm-pack
+curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
 rustup upgrade
 rustup component add rust-analyzer
 
+cargo install cargo-generate
 cargo install cargo-release
 
 # Install tools (Linux)
