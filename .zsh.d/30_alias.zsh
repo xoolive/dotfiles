@@ -9,3 +9,6 @@ if [[ $(uname -s) = "Linux" ]]; then
 fi
 
 alias home='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+alias lt="ls --tree --sort type --level 2"
+alias lty="ls --sort type"

@@ -1,3 +1,5 @@
 *
-!.github
-!.gitignore_dotfiles
+!/.github/**
+!/.zsh.d/**
+!/.zshrc
+!/.gitignore_dotfiles
