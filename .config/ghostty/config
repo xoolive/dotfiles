@@ -8,5 +8,7 @@ macos-option-as-alt = right
 # theme = "Raycast_Dark"
 theme = "catppuccin-mocha"
 
+unfocused-split-opacity = 1
+
 # keybind = ctrl+z=close_surface
 # keybind = ctrl+d=new_split:right

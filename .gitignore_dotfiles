@@ -1,5 +1,12 @@
 *
+!/.config/atuin/**
+!/.config/bat/**
+!/.config/ghostty/**
+!/.config/helix/**
+!/.config/nushell/**
+!/.config/tealdeer/**
+!/.config/tmux-powerline/**
 !/.github/**
+!/.gitignore_dotfiles
 !/.zsh.d/**
 !/.zshrc
-!/.gitignore_dotfiles
