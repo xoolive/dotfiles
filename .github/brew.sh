@@ -21,7 +21,7 @@ brew install --cask ghostty
 brew install --cask gimp
 brew install --cask macvim
 brew install --cask mongodb-compass
-brew install --cask ollama
+brew install --cask rectangle
 brew install --cask transmission
 brew install --cask vlc
 brew install --cask wezterm
@@ -70,8 +70,10 @@ brew install podman
 brew install podman-desktop
 brew install protobuf
 brew install quarto
+brew install shadowsocks-libev
 brew install socat
 brew install sox
+brew install sshpass
 brew install taplo  # linter for toml
 brew install telnet
 brew install tesseract
