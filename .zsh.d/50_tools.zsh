@@ -22,5 +22,7 @@ eval "$(atuin init zsh --disable-up-arrow)"
 export PATH="$HOME/.pixi/bin:$PATH"
 eval "$(pixi completion --shell zsh)"
 
+eval "$(just --completions zsh)"
+
 # -- jet1090 (completion) --
 eval "$(jet1090 --completion zsh)"
