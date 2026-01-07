@@ -1,14 +1,18 @@
 font-family = "CaskaydiaCove Nerd Font Mono"
-font-size = 11
+font-size = 12
 # font-thicken = true
 
 macos-titlebar-style = transparent
 macos-option-as-alt = right
 
-# theme = "Raycast_Dark"
-theme = "catppuccin-mocha"
+shell-integration-features = ssh-env
+
+# theme = Raycast Dark
+theme = Catppuccin Mocha
 
 unfocused-split-opacity = 1
 
-# keybind = ctrl+z=close_surface
-# keybind = ctrl+d=new_split:right
+# Quick terminal
+quick-terminal-position = center
+quick-terminal-size = 120px,50%
+keybind = global:cmd+:=toggle_quick_terminal
