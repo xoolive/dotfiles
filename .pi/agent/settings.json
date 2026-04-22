@@ -1,0 +1,16 @@
+{
+  "lastChangelogVersion": "0.68.1",
+  "defaultProvider": "github-copilot",
+  "defaultModel": "claude-opus-4.7",
+  "defaultThinkingLevel": "medium",
+  "hideThinkingBlock": false,
+  "theme": "catppuccin-mocha",
+  "packages": [
+    "npm:pi-terminal-signals",
+    "npm:pi-ghostty"
+  ],
+  "enabledModels": [
+    "github-copilot/claude-haiku-4.5",
+    "github-copilot/claude-opus-4.7"
+  ]
+}
