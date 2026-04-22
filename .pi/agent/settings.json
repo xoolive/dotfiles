@@ -1,11 +1,10 @@
 {
-  "lastChangelogVersion": "0.68.1",
+  "lastChangelogVersion": "0.69.0",
   "defaultProvider": "github-copilot",
   "defaultModel": "claude-sonnet-4.6",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": false,
   "packages": [
-    "npm:pi-bash-live-view",
     "npm:pi-terminal-signals",
     "npm:pi-ghostty",
     "npm:@ogulcancelik/pi-ghostty-theme-sync",
