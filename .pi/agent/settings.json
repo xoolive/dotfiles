@@ -1,16 +1,27 @@
 {
   "lastChangelogVersion": "0.68.1",
   "defaultProvider": "github-copilot",
-  "defaultModel": "claude-opus-4.7",
+  "defaultModel": "claude-sonnet-4.6",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": false,
-  "theme": "catppuccin-mocha",
   "packages": [
+    "npm:pi-bash-live-view",
     "npm:pi-terminal-signals",
-    "npm:pi-ghostty"
+    "npm:pi-ghostty",
+    "npm:@ogulcancelik/pi-ghostty-theme-sync",
+    {
+      "source": "git:github.com/tomsej/pi-ext",
+      "extensions": [
+        "extensions/custom-footer/custom-footer.ts",
+        "extensions/leader-key",
+        "extensions/permissions/permissions.ts",
+        "extensions/pi-sem",
+        "extensions/pi-telescope",
+        "extensions/review/review.ts",
+        "extensions/tool-pills"
+      ],
+      "skills": []
+    }
   ],
-  "enabledModels": [
-    "github-copilot/claude-haiku-4.5",
-    "github-copilot/claude-opus-4.7"
-  ]
+  "theme": "ghostty-sync-47c8ca45"
 }
