@@ -1,0 +1,21 @@
+tabbar {
+  margin-top: -8px;
+  margin-bottom: -8px;
+}
+
+headerbar {
+  margin-top: -4px;
+  margin-bottom: -4px;
+}
+
+headerbar button {
+  min-height: 8px;
+  min-width: 8px;
+  padding: 0;
+}
+
+tabbar tabbox tab:selected {
+  border-radius: 0px;
+  font-weight: bold;
+  color: #f58518;
+}

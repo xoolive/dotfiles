@@ -1,5 +1,4 @@
 {
-  "layer": "top",
   "position": "top",
   "output": [
     "eDP-1"
@@ -13,9 +12,9 @@
     "clock"
   ],
   "modules-right": [
+    "network",
     "pulseaudio",
     "bluetooth",
-    "network",
     "battery",
     "tray"
   ],
@@ -24,31 +23,9 @@
     "all-outputs": true,
     "format": "{name}"
   },
-  "hyprland/window": {
-    "max-length": 60,
-    "separate-outputs": true
-  },
   "clock": {
-    "format": "{:%a %d %b  %H:%M}",
-    "tooltip-format": "<big>{:%A %d %B %Y}</big>\n<tt>{calendar}</tt>"
-  },
-  "pulseaudio": {
-    "format": "  {volume}%",
-    "format-muted": "󰖁  muted",
-    "scroll-step": 5
-  },
-  "bluetooth": {
-    "format": " {status}",
-    "format-disabled": " off",
-    "format-connected": " {device_alias}",
-    "tooltip-format": "{controller_alias}\n{num_connections} connected",
-    "on-click": "blueman-manager"
-  },
-  "network": {
-    "format-wifi": "  {essid}",
-    "format-ethernet": "󰈀  wired",
-    "format-disconnected": "󰖪  offline",
-    "tooltip-format": "{ifname} via {gwaddr}"
+    "format": "<span foreground='#f5c2e7'>   </span>{:%a %d %b  %H:%M}",
+    "tooltip-format": "<big>{:%A %d %B %Y}</big>\n<tt><small>{calendar}</small></tt>"
   },
   "battery": {
     "states": {
@@ -58,6 +35,10 @@
     "format": "{icon}  {capacity}%",
     "format-charging": "󰂄  {capacity}%",
     "format-plugged": "󰂄  {capacity}%",
+    "format-warning": "<span size='13000' foreground='#B1E3AD'>{icon} </span> {capacity}%",
+    "format-critical": "<span size='13000' foreground='#E38C8F'>{icon} </span> {capacity}%",
+    "format-alt": "<span size='13000' foreground='#B1E3AD'>{icon} </span> {time}",
+    "format-full": "<span size='13000' foreground='#B1E3AD'>{icon} </span>{capacity}%",
     "format-icons": [
       "󰁺",
       "󰁻",
@@ -69,7 +50,35 @@
       "󰂁",
       "󰂂",
       "󰁹"
-    ]
+    ],
+    "tooltip-format": "{time}"
+  },
+  "network": {
+    "format-wifi": "<span size='13000' foreground='#f5e0dc'>  </span>{essid}",
+    "format-ethernet": "<span size='13000' foreground='#f5e0dc'>󰈀 </span>",
+    "format-linked": "{ifname} (No IP) ",
+    "format-disconnected": "<span size='13000' foreground='#f5e0dc'>󰖪  </span>offline",
+    "tooltip-format": "{ifname}\n{ipaddr}",
+    "tooltip-format-wifi": "Signal Strength: {signalStrength}%"
+  },
+  "pulseaudio": {
+    "format": "{icon}  {volume}%",
+    "format-muted": "",
+    "format-icons": {
+      "default": [
+        "",
+        "",
+        " "
+      ]
+    },
+    "on-click": "pavucontrol"
+  },
+  "bluetooth": {
+    "format": "<span size='13000' foreground='#B279A2'> </span>",
+    "format-disabled": " off",
+    //"format-connected": " {device_alias}",
+    "tooltip-format": "{controller_alias}\n{num_connections} {status}",
+    "on-click": "blueman-manager"
   },
   "tray": {
     "spacing": 10

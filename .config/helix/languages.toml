@@ -14,6 +14,11 @@ auto-format = true
 formatter = { command = "nixpkgs-fmt" }
 
 [[language]]
+name = "nu"
+auto-format = true
+formatter = { command = "nufmt", args = ["--stdin"] }
+
+[[language]]
 name = "python"
 auto-format = true
 roots = ["pyproject.toml", "poetry.lock", "uv.lock", ".venv/"]

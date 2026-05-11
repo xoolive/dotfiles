@@ -15,4 +15,11 @@ unfocused-split-opacity = 1
 # Quick terminal
 quick-terminal-position = center
 quick-terminal-size = 120px,50%
+
 keybind = global:cmd+:=toggle_quick_terminal
+keybind = global:ctrl+:=toggle_quick_terminal
+
+# GTK specific settings
+gtk-custom-css = ~/.config/ghostty/gtk.css
+gtk-titlebar = false
+
