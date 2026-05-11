@@ -23,14 +23,6 @@ if [[ -d $HOME/.atuin/bin ]]; then
     export PATH="$PATH:$HOME/.atuin/bin/"
 fi
 
-# -- rye (Python) --
-# . "$HOME/.rye/env"
-
-# -- volta (Js) --
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
-
-# -- Go --
 export GOPATH="$HOME/.gopath"
 export PATH="$GOPATH/bin:$PATH"
 
@@ -47,5 +39,11 @@ if [[ $(uname -s) = "Darwin" ]]; then
     case ":$PATH:" in
       *":$PNPM_HOME/bin:"*) ;;
       *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+    esac
+else
+    export PNPM_HOME="$HOME/.local/share/pnpm"
+    case ":$PATH:" in
+      *":$PNPM_HOME:"*) ;;
+      *) export PATH="$PNPM_HOME:$PATH" ;;
     esac
 fi
