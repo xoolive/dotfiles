@@ -380,6 +380,7 @@ if has('gui_running')
     if has('mac')
         set guifont=FiraMonoForPowerline-Regular:h11
         set macligatures
+        set lines=70
     elseif has('unix')
         set guifont=Fira\ Mono\ for\ Powerline\ 11
         set lines=55

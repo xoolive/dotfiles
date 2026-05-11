@@ -71,6 +71,7 @@ plugins=(
     git-auto-fetch
     gitignore
     macos
+    mise
     npm
     nvm
     pip
@@ -83,7 +84,6 @@ plugins=(
     sudo
     tmux
     uv
-    volta
     web-search
     zoxide
     zsh-completions

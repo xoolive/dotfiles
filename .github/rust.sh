@@ -33,3 +33,9 @@ cargo install procs  # (replace ps)
 # cargo install tealdeer  # outdated release, clone and compile
 cargo install xh  # http requests
 cargo install zoxide  # (replace cd)
+
+cargo install --git https://github.com/nushell/nufmt
+
+
+# https://github.com/jordond/jolt
+curl -fsSL https://getjolt.sh/install.sh | bash

@@ -38,5 +38,14 @@ export PATH="$GOPATH/bin:$PATH"
 if [[ $(uname -s) = "Darwin" ]]; then
     source "$(brew --prefix)/opt/chruby/share/chruby/chruby.sh"
     source "$(brew --prefix)/opt/chruby/share/chruby/auto.sh"
-    chruby ruby-3.1.3
+    chruby ruby-3.4.6
+fi
+
+# -- pnpm --
+if [[ $(uname -s) = "Darwin" ]]; then
+    export PNPM_HOME="$HOME/Library/pnpm"
+    case ":$PATH:" in
+      *":$PNPM_HOME/bin:"*) ;;
+      *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+    esac
 fi

@@ -1,12 +1,15 @@
 {
-  "lastChangelogVersion": "0.69.0",
+  "lastChangelogVersion": "0.74.0",
   "defaultProvider": "github-copilot",
   "defaultModel": "claude-sonnet-4.6",
-  "defaultThinkingLevel": "medium",
+  "defaultThinkingLevel": "off",
   "hideThinkingBlock": false,
   "packages": [
-    "npm:pi-terminal-signals",
+    "npm:pi-btw",
+    "npm:pi-kanban",
     "npm:pi-ghostty",
+    "npm:pi-terminal-signals",
+    "npm:pi-wakatime",
     "npm:@ogulcancelik/pi-ghostty-theme-sync",
     {
       "source": "git:github.com/tomsej/pi-ext",
@@ -20,7 +23,14 @@
         "extensions/tool-pills"
       ],
       "skills": []
-    }
+    },
+    "git:github.com/tmustier/pi-extensions"
   ],
-  "theme": "ghostty-sync-47c8ca45"
+  "theme": "ghostty-sync-47c8ca45",
+  "enabledModels": [
+    "github-copilot/claude-haiku-4.5",
+    "github-copilot/claude-opus-4.7",
+    "github-copilot/claude-sonnet-4.6",
+    "openai-codex/gpt-5.5"
+  ]
 }

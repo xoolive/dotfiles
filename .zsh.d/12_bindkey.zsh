@@ -18,19 +18,19 @@ display_date () {
 }
 zle -N display_date
 
-weather () {
-    echo
-    # curl -f -s -m 2 'wttr.in/Toulouse?format=3' || printf '\n'
-    curl 'wttr.in/Toulouse?format=Moon+phase:+%m'
-    echo
-    curl 'wttr.in/Toulouse?format=%l+%c%09+%t,+%w'
-    echo
-    curl 'wttr.in/Delft?format=%l%09+%c%09+%t,+%w'
-    echo
-    curl 'wttr.in/Kyoto?format=%l%09+%c%09+%t,+%w'
-    echo; echo; zle redisplay
-}
-zle -N weather
+# weather () {
+#     echo
+#     # curl -f -s -m 2 'wttr.in/Toulouse?format=3' || printf '\n'
+#     curl 'wttr.in/Toulouse?format=Moon+phase:+%m'
+#     echo
+#     curl 'wttr.in/Toulouse?format=%l+%c%09+%t,+%w'
+#     echo
+#     curl 'wttr.in/Delft?format=%l%09+%c%09+%t,+%w'
+#     echo
+#     curl 'wttr.in/Kyoto?format=%l%09+%c%09+%t,+%w'
+#     echo; echo; zle redisplay
+# }
+# zle -N weather
 
 xclip_qrcode() {
     if [[ $(uname -s) = "Darwin" ]]; then
@@ -62,4 +62,4 @@ bindkey "[15~" display_date  # F5
 bindkey "[17~" my_ip # F6
 bindkey "[18~" xclip_qrcode # F7
 bindkey "[19~" xclip_scan # F8
-bindkey "[20~" weather  # F9
+# bindkey "[20~" weather  # F9

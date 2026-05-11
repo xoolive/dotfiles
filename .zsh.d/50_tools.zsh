@@ -24,3 +24,11 @@ eval "$(just --completions zsh)"
 # -- jet1090 (completion) --
 eval "$(jet1090 --completion zsh)"
 
+# -- ut completion --
+eval "$(ut completions zsh)"
+
+# -- jujutsu completion --
+eval "$(jj util completion zsh)"
+
+# -- mise --
+eval "$(mise activate zsh)"

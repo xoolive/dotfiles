@@ -11,3 +11,9 @@ tlmgr install tufte-latex hardwrap xtlxtra realscripts titlesec ragged2e textcas
 tlmgr install babel-french hyphen-french
 # useful without inkscape?
 tlmgr install svg transparent
+tlmgr install inconsolata
+tlmgr install ucharclasses
+# slides cours python
+tlmgr install mathspec polyglossia ccicons marvosym
+# book ntu
+tlmgr install type1cm newtx xstring carlisle oberdiek

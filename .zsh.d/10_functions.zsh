@@ -148,3 +148,6 @@ function o() {
 
 # I like it!
 autoload -U zmv
+
+# just a priority issue
+punshift ~/.local/bin

@@ -1,10 +1,14 @@
-# install Volta
-curl https://get.volta.sh | zsh
 
-# install Node
-volta install node
+mise use -g node@latest
+mise use -g pnpm@latest
+mise use -g prettier@latest
 
-npm install -g typescript typescript-language-server
-npm install -g @vue/language-server
-npm install -g prettier
-npm install -g vscode-langservers-extracted
+mise upgrade --bump
+
+pnpm add -g typescript typescript-language-server
+pnpm add -g @vue/language-server
+
+pnpm add -g @earendil-works/pi-coding-agent  # pi update
+pnpm add -g hunkdiff
+
+# npm install -g vscode-langservers-extracted

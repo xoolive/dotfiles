@@ -6,7 +6,7 @@ auto-format = true
 [[language]]
 name = "markdown"
 auto-format = true
-language-servers = [ "marksman", "ltex-ls" ]
+language-servers = ["marksman", "ltex-ls"]
 
 [[language]]
 name = "nix"
@@ -45,7 +45,6 @@ lint.preview = true
 plugins.pylsp_mypy.enabled = true
 plugins.pylsp_mypy.dmypy = true
 plugins.pylsp_mypy.dmypy_command = ["uv", "run", "dmypy"]
-
 [[language]]
 name = "rust"
 auto-format = true
