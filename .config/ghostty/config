@@ -23,6 +23,4 @@ keybind = global:ctrl+:=toggle_quick_terminal
 gtk-custom-css = ~/.config/ghostty/gtk.css
 gtk-titlebar = false
 
-# Jump between pi agent messages (using OSC 133 semantics)
-keybind = ctrl+ship+up=jump_to_prompt:-1
-keybind = ctrl+ship+down=jump_to_prompt:1
+desktop-notifications = true

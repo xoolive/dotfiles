@@ -1,30 +1,31 @@
 {
   "lastChangelogVersion": "0.74.0",
-  "defaultProvider": "github-copilot",
-  "defaultModel": "claude-sonnet-4.6",
-  "defaultThinkingLevel": "off",
-  "hideThinkingBlock": false,
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.5",
+  "defaultThinkingLevel": "medium",
+  "hideThinkingBlock": true,
   "packages": [
     "npm:pi-btw",
     "npm:pi-kanban",
     "npm:pi-ghostty",
+    "npm:pi-powerline-footer",
     "npm:pi-terminal-signals",
+    "npm:pi-token-burden",
     "npm:pi-wakatime",
     "npm:@ogulcancelik/pi-ghostty-theme-sync",
+    "npm:@tmustier/pi-usage-extension",
     {
       "source": "git:github.com/tomsej/pi-ext",
       "extensions": [
-        "extensions/custom-footer/custom-footer.ts",
         "extensions/leader-key",
-        "extensions/permissions/permissions.ts",
         "extensions/pi-sem",
         "extensions/pi-telescope",
         "extensions/review/review.ts",
         "extensions/tool-pills"
       ],
-      "skills": []
-    },
-    "git:github.com/tmustier/pi-extensions"
+      "skills": [],
+      "themes": []
+    }
   ],
   "theme": "ghostty-sync-47c8ca45",
   "enabledModels": [
@@ -32,5 +33,12 @@
     "github-copilot/claude-opus-4.7",
     "github-copilot/claude-sonnet-4.6",
     "openai-codex/gpt-5.5"
-  ]
+  ],
+  "powerline": {
+    "preset": "default",
+    "fixedEditor": true,
+    "mouseScroll": true
+  },
+  "workingVibe": "rugby",
+  "workingVibeMode": "file"
 }
