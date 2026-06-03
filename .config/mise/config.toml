@@ -2,3 +2,4 @@
 node = "latest"
 pnpm = "latest"
 prettier = "latest"
+rumdl = "latest"

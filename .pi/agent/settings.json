@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.74.0",
+  "lastChangelogVersion": "0.78.0",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.5",
   "defaultThinkingLevel": "medium",
@@ -9,9 +9,12 @@
     "npm:pi-kanban",
     "npm:pi-ghostty",
     "npm:pi-powerline-footer",
+    "npm:pi-subagents",
     "npm:pi-terminal-signals",
     "npm:pi-token-burden",
     "npm:pi-wakatime",
+    "npm:@juicesharp/rpiv-todo",
+    "npm:@juicesharp/rpiv-ask-user-question",
     "npm:@ogulcancelik/pi-ghostty-theme-sync",
     "npm:@tmustier/pi-usage-extension",
     {
