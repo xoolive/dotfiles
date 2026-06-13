@@ -1,8 +1,3 @@
-
-mise use -g node@latest
-mise use -g pnpm@latest
-mise use -g prettier@latest
-
 mise upgrade --bump
 
 pnpm add -g typescript typescript-language-server

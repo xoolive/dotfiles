@@ -5,12 +5,11 @@ const MESSAGE =
   "No direct `python`. Use `uv run` instead. For one-off dependencies, use `uv run --with`.";
 
 function usesBarePython3(command: string): boolean {
-  // Matches likely shell command invocations of python3, while allowing
-  // `uv run python3 ...`.
-  const barePython = /(^|[;&|()\s])python(\s|$)/;
-  const barePython3 = /(^|[;&|()\s])python3(\s|$)/;
-  const uvRunPython3 = /(^|[;&|()\s])uv\s+run\s+python(\s|$)/;
-  return barePython.test(command) && barePython3.test(command) && !uvRunPython3.test(command);
+  // Matches likely shell command invocations of python/python3, while allowing
+  // `uv run python ...` and `uv run python3 ...`.
+  const barePython = /(^|[;&|()\s])python3?(\s|$)/;
+  const uvRunPython = /(^|[;&|()\s])uv\s+run\s+python3?(\s|$)/;
+  return barePython.test(command) && !uvRunPython.test(command);
 }
 
 export default function (pi: ExtensionAPI) {

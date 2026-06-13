@@ -67,9 +67,9 @@ Format examples: **词** (pīnyīn), **漢字** (かんじ), or **blyg** (*shy*)
 
 ## 🔤 Vocabulary
 
-| Word | Meaning |
-|---|---|
-| ... | ... |
+| Word | Pronunciation | Meaning |
+|---|---|---|
+| ... | ... | ... |
 
 ---
 
@@ -87,8 +87,8 @@ Format examples: **词** (pīnyīn), **漢字** (かんじ), or **blyg** (*shy*)
 ### Annotation guidelines by language
 
 **Chinese (zh):**
-- Add pinyin only for words a learner at this level likely doesn't know yet
-- Skip pinyin for words already in the vocabulary preview (they're being taught)
+- In the transcript, add pinyin only for words a learner at this level likely doesn't know yet
+- In the vocabulary table, always include a `Pronunciation` column with pinyin for every Chinese vocabulary item, including words from the vocabulary preview
 - Include tones — `mā má mǎ mà`
 - Grammar: focus on patterns like 把, 是…的, 只要…就, 一边…一边, 越来越, 虽然…但是
 
@@ -100,7 +100,7 @@ Format examples: **词** (pīnyīn), **漢字** (かんじ), or **blyg** (*shy*)
 **Other languages:**
 - Do not add pronunciation by default. If the user can already pronounce the language/script (e.g. Swedish), put the English meaning inline for harder words instead of pronunciation hints.
 - Only add pronunciation hints when pronunciation is genuinely non-obvious or the user asks for them.
-- Vocabulary tables should omit pronunciation columns unless pronunciation is needed for that language.
+- Vocabulary tables should omit pronunciation columns unless pronunciation is needed for that language; for Chinese, always include the pinyin column.
 - Grammar: focus on structures that differ significantly from English
 
 ### 6. Save files
