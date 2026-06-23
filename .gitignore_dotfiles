@@ -18,6 +18,15 @@
 !.gitignore_dotfiles
 !.pi/
 !.pi/**
+.pi/agent/auth.json
+.pi/agent/permissions.json
+.pi/agent/trust.json
+.pi/agent/run-history.jsonl
+.pi/agent/sessions/
+.pi/agent/kanban/
+.pi/agent/git
+.pi/agent/npm/
+.pi/agent/extensions/rtk.ts
 !.zsh.d/
 !.zsh.d/**
 !.zshrc
