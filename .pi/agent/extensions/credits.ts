@@ -38,34 +38,28 @@ const GPT_URL = process.env.PI_CREDITS_GPT_URL ?? process.env.PI_USAGE_GPT_URL ?
 
 export default function (pi: ExtensionAPI) {
 	let status: UsageStatus = {};
-	let timer: ReturnType<typeof setInterval> | undefined;
 	let lastCtx: UiContext | undefined;
+	let lastFullRefreshAt = 0;
 
 	async function refresh(ctx?: UiContext) {
 		const next: UsageStatus = { updatedAt: Date.now() };
+		lastFullRefreshAt = next.updatedAt;
 		const [github, gpt] = await Promise.all([loadGitHub(pi, ctx ?? lastCtx), loadGpt(pi, ctx ?? lastCtx)]);
 		next.github = github;
 		next.gpt = gpt;
 		status = next;
-		if (ctx ?? lastCtx) installHeader(ctx ?? lastCtx!);
+		if (ctx ?? lastCtx) installFooterStatus(ctx ?? lastCtx!);
 	}
 
-	async function refreshGitHubOnly(ctx?: UiContext) {
-		const github = await loadGitHub(pi, ctx ?? lastCtx);
-		status = { ...status, github, updatedAt: Date.now() };
-		if (ctx ?? lastCtx) installHeader(ctx ?? lastCtx!);
-	}
-
-	function installHeader(ctx: UiContext) {
+	function installFooterStatus(ctx: UiContext) {
 		lastCtx = ctx;
 		if (ctx.mode !== "tui") return;
-		// Use Pi's existing footer status line. This preserves the built-in footer
-		// and avoids custom-footer regressions.
-		ctx.ui.setHeader(undefined);
+		// Use Pi's existing footer status line. This preserves the built-in header
+		// and avoids custom-header/custom-footer regressions.
 		ctx.ui.setWidget("credits", undefined);
-		// Do not call setFooter(undefined): that restores Pi's built-in footer and
-		// can make credits appear twice when another extension (e.g. powerline)
-		// owns the footer and also renders extension statuses.
+		// Do not call setHeader(undefined) or setFooter(undefined): those restore Pi's
+		// built-ins and can wipe another extension's custom header/footer. Footer
+		// status is enough for persistent credit display.
 		const theme = ctx.ui.theme;
 		const provider = ctx.model?.provider;
 		const line = provider === "github-copilot"
@@ -79,30 +73,30 @@ export default function (pi: ExtensionAPI) {
 	}
 
 	pi.on("session_start", async (_event, ctx) => {
-		installHeader(ctx);
+		installFooterStatus(ctx);
 		void refresh(ctx);
-		// GitHub exposes a zero-cost usage endpoint. ChatGPT/Codex usage is refreshed
-		// from normal provider responses, or by /credit-refresh's tiny probe.
-		if (!timer) timer = setInterval(() => void refreshGitHubOnly(lastCtx), REFRESH_MS);
 	});
 
 	pi.on("after_provider_response", async (event, ctx) => {
 		const gpt = parseGptHeaders(event.headers);
-		if (!gpt) return;
-		status = { ...status, gpt, updatedAt: Date.now() };
-		installHeader(ctx);
+		if (gpt) {
+			status = { ...status, gpt, updatedAt: Date.now() };
+			installFooterStatus(ctx);
+		}
+		// Avoid idle polling: after a real query, refresh both sources only if the
+		// last full refresh is older than the configured interval.
+		if (Date.now() - lastFullRefreshAt >= REFRESH_MS) void refresh(ctx);
 	});
 
-	pi.on("model_select", async (_event, ctx) => installHeader(ctx));
-	pi.on("thinking_level_select", async (_event, ctx) => installHeader(ctx));
+	pi.on("model_select", async (_event, ctx) => installFooterStatus(ctx));
+	pi.on("thinking_level_select", async (_event, ctx) => installFooterStatus(ctx));
 
 	pi.on("session_shutdown", async () => {
-		if (timer) clearInterval(timer);
-		timer = undefined;
+		lastCtx = undefined;
 	});
 
-	pi.registerCommand("credit-refresh", {
-		description: "Refresh GitHub Copilot and ChatGPT/Codex credits in the header",
+	pi.registerCommand("usage-refresh", {
+		description: "Force-refresh GitHub Copilot and ChatGPT/Codex usage in the footer status line",
 		handler: async (_args, ctx) => {
 			await refresh(ctx);
 			ctx.ui.notify("Credits refreshed", "info");
@@ -110,11 +104,10 @@ export default function (pi: ExtensionAPI) {
 	});
 
 	pi.registerCommand("credit", {
-		description: "Refresh credits in the footer",
+		description: "Show cached credits in the footer status line",
 		handler: async (_args, ctx) => {
-			await refresh(ctx);
-			// No notification: the persistent footer is the display. This avoids
-			// duplicating the credits in the transcript/console area.
+			installFooterStatus(ctx);
+			ctx.ui.notify(plainCreditSummary(status), "info");
 		},
 	});
 }
@@ -356,14 +349,28 @@ function bar(ratio: number, theme: UiContext["ui"]["theme"], width: number): str
 	return `${theme.fg("dim", "[")}${theme.fg(color as "error", "█".repeat(filled))}${theme.fg("dim", "░".repeat(empty) + "]")}`;
 }
 
-function plainBar(percent: number | undefined, width = 10): string {
-	if (percent === undefined) return `[${"░".repeat(width)}]`;
-	const filled = Math.round(clamp(percent, 0, 100) / 100 * width);
-	return `[${"█".repeat(filled)}${"░".repeat(width - filled)}]`;
+function plainCreditSummary(status: UsageStatus): string {
+	const updated = status.updatedAt ? ` (updated ${formatTime(status.updatedAt)})` : "";
+	return `${plainGitHubSummary(status.github)} | ${plainGptSummary(status.gpt)}${updated}`;
 }
 
-function percentValue(value: number | undefined): number | undefined {
-	return value === undefined ? undefined : clamp(value, 0, 100);
+function plainGitHubSummary(data: GitHubUsage | undefined): string {
+	if (!data) return "GitHub loading…";
+	if (data.error) return `GitHub ? ${data.error}`;
+	const used = data.used ?? 0;
+	const limit = data.limit ?? 0;
+	const extra = data.additionalUsed !== undefined && data.additionalLimit !== undefined
+		? ` extra $${data.additionalUsed}/$${data.additionalLimit}`
+		: "";
+	return `GitHub ${used}/${limit}${extra}${data.resetsAt ? ` resets ${data.resetsAt}` : ""}`;
+}
+
+function plainGptSummary(data: GptUsage | undefined): string {
+	if (!data) return "Codex loading…";
+	if (data.error) return `Codex ? ${data.error}`;
+	const shortPct = clamp(data.shortPercent ?? data.percent ?? 0, 0, 100);
+	const weeklyPct = clamp(data.weeklyPercent ?? data.percent ?? 0, 0, 100);
+	return `Codex ${shortPct}%${data.shortResetsAt ? ` resets ${data.shortResetsAt}` : ""} week ${weeklyPct}%${data.weeklyResetsAt ? ` resets ${data.weeklyResetsAt}` : ""}`;
 }
 
 function normalize(text: string): string {

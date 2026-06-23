@@ -16,6 +16,8 @@
 !.github/
 !.github/**
 !.gitignore_dotfiles
+!.pi/
+!.pi/**
 !.zsh.d/
 !.zsh.d/**
 !.zshrc

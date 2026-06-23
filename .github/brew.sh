@@ -97,6 +97,7 @@ brew install prek
 brew install protobuf
 brew install p7zip
 brew install quarto
+brew install rtk
 brew install sem-cli
 brew install shadowsocks-libev
 brew install shellcheck
