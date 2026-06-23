@@ -39,7 +39,7 @@ local crust = "rgb(11111b)"
 -- Use Hyprland's `desc:` selector so the external monitor rules survive
 -- connector renames such as DP-4 -> DP-6 after reconnecting docks/cables.
 hl.monitor({ output = "desc:Dell Inc. DELL P2419H 9DPW893",       mode = "1920x1080", position = "0x0",    scale = 1 })
-hl.monitor({ output = "desc:Sharp Corporation 0x14D1",            mode = "1920x1200", position = "1920x0", scale = 1 })
+hl.monitor({ output = "desc:Sharp Corporation 0x149A",            mode = "1920x1080", position = "1920x0", scale = 1 })
 hl.monitor({ output = "desc:Dell Inc. DELL P2417H CW6Y769A33LB",  mode = "1920x1080", position = "3840x0", scale = 1 })
 
 ---------------------
