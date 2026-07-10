@@ -35,7 +35,63 @@ failed lookup: name = com.nextcloud.desktopclient-spks, error = 3: No such proce
 This is the Sparkle updater helper not being found, which may prevent the app from
 fully registering its background activity.
 
-## Fix: launchd watchdog
+## Fix: launchd wrapper watchdog
+
+Older workaround: run Nextcloud directly from launchd with
+`KeepAlive -> SuccessfulExit = false`. That only restarts non-zero exits. After
+Nextcloud 33.0.7, the app can disappear while launchd records `last exit code =
+0`; FinderSync then keeps logging `Connection refused` because the main client
+socket is gone. In that case launchd thinks this was a clean/manual quit and does
+not restart it.
+
+More robust fix: launchd keeps a small watchdog loop alive; the loop launches
+Nextcloud whenever the main `Nextcloud` process is missing. This handles crashes,
+TAL kills, and surprising clean exits, while avoiding the repeated menu-bar
+reactivation caused by running Nextcloud itself with unconditional `KeepAlive`.
+
+Create `~/.local/bin/nextcloud-watchdog.zsh`:
+
+```zsh
+#!/bin/zsh
+set -u
+
+APP="/Applications/Nextcloud.app"
+DISABLE_FILE="$HOME/.nextcloud-watchdog-disabled"
+LOG="/tmp/nextcloud-watchdog.log"
+INTERVAL="${NEXTCLOUD_WATCHDOG_INTERVAL:-60}"
+
+log() {
+  print -r -- "[$(/bin/date '+%Y-%m-%d %H:%M:%S')] $*" >> "$LOG"
+}
+
+log "watchdog started (interval=${INTERVAL}s)"
+
+while true; do
+  if [[ -e "$DISABLE_FILE" ]]; then
+    log "disabled by $DISABLE_FILE"
+    sleep "$INTERVAL"
+    continue
+  fi
+
+  if [[ ! -d "$APP" ]]; then
+    log "app not found: $APP"
+    sleep "$INTERVAL"
+    continue
+  fi
+
+  if ! /usr/bin/pgrep -x Nextcloud >/dev/null 2>&1; then
+    log "Nextcloud not running; launching"
+    /usr/bin/open -g -j -a "$APP" >> "$LOG" 2>&1 || log "open failed with status $?"
+    sleep 10
+  fi
+
+  sleep "$INTERVAL"
+done
+```
+
+```bash
+chmod +x ~/.local/bin/nextcloud-watchdog.zsh
+```
 
 Create `~/Library/LaunchAgents/com.nextcloud.watchdog.plist`:
 
@@ -49,23 +105,17 @@ Create `~/Library/LaunchAgents/com.nextcloud.watchdog.plist`:
 
     <key>ProgramArguments</key>
     <array>
-        <string>/Applications/Nextcloud.app/Contents/MacOS/Nextcloud</string>
+        <string>/Users/xo/.local/bin/nextcloud-watchdog.zsh</string>
     </array>
 
-    <!-- Start at login -->
     <key>RunAtLoad</key>
     <true/>
 
-    <!-- Only restart on non-zero exit (crash or TAL kill).
-         SuccessfulExit=false means: do NOT restart on clean exit (code 0),
-         so manually quitting Nextcloud from its menu works as expected. -->
+    <!-- Keep the watchdog loop alive. The watchdog, not launchd, decides when
+         to launch Nextcloud. -->
     <key>KeepAlive</key>
-    <dict>
-        <key>SuccessfulExit</key>
-        <false/>
-    </dict>
+    <true/>
 
-    <!-- 10s cooldown to avoid tight restart loops on repeated crashes -->
     <key>ThrottleInterval</key>
     <integer>10</integer>
 
@@ -77,48 +127,79 @@ Create `~/Library/LaunchAgents/com.nextcloud.watchdog.plist`:
 </plist>
 ```
 
-Load it immediately (no reboot needed) — but first kill the existing Nextcloud
-process so launchd owns it going forward:
+Load it:
 
 ```bash
-kill $(pgrep -x Nextcloud)
-launchctl load ~/Library/LaunchAgents/com.nextcloud.watchdog.plist
-
-# Verify it's running under launchd
-launchctl list | grep nextcloud
+launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.nextcloud.watchdog.plist 2>/dev/null || true
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.nextcloud.watchdog.plist
 ```
 
-## Why `KeepAlive: true` (the naive approach) breaks things
+To intentionally keep Nextcloud stopped:
 
-Using `KeepAlive = true` unconditionally causes launchd to respawn Nextcloud
-immediately after every exit — including when it's already running. This results
-in a second instance launching on top of the first, which pops the status bar
-dropdown open every few seconds and makes the app unusable.
+```bash
+touch ~/.nextcloud-watchdog-disabled
+pkill -x Nextcloud
+```
 
-The fix is `KeepAlive -> SuccessfulExit = false`, which only restarts on
-non-clean exits (signals, TAL kills) and leaves intentional quits alone.
+Re-enable it:
 
-## Restart behaviour summary
+```bash
+rm ~/.nextcloud-watchdog-disabled
+```
 
-| Situation | Exit code | launchd restarts? |
-|---|---|---|
-| macOS kills via TAL | signal `-9` (non-zero) | ✅ Yes |
-| Nextcloud crashes | non-zero | ✅ Yes |
-| User quits from menu | `0` (clean) | ❌ No |
+## Why direct `KeepAlive` on Nextcloud breaks
+
+Bad direct plist shape:
+
+```xml
+<key>ProgramArguments</key>
+<array>
+    <string>/Applications/Nextcloud.app/Contents/MacOS/Nextcloud</string>
+</array>
+<key>KeepAlive</key>
+<true/>
+```
+
+This can repeatedly respawn/reactivate the menu-bar app and make the status-bar
+dropdown open every few seconds.
+
+The less-bad direct form was:
+
+```xml
+<key>KeepAlive</key>
+<dict>
+    <key>SuccessfulExit</key>
+    <false/>
+</dict>
+```
+
+But this misses the newer failure mode where Nextcloud disappears with exit code
+`0`. The wrapper watchdog is now preferred.
 
 ## Useful commands
 
 ```bash
-# Check if watchdog is running and get Nextcloud's PID
+# Check if watchdog and Nextcloud are running
 launchctl list | grep nextcloud
+pgrep -afil 'nextcloud-watchdog|/Applications/Nextcloud.app/Contents/MacOS/Nextcloud'
+
+# Inspect launchd job
+launchctl print gui/$(id -u)/com.nextcloud.watchdog | grep -E 'state =|program =|runs =|last exit code|properties ='
 
 # Tail watchdog logs
 tail -f /tmp/nextcloud-watchdog.log /tmp/nextcloud-watchdog-error.log
 
-# Unload watchdog (disables auto-restart)
-launchctl unload ~/Library/LaunchAgents/com.nextcloud.watchdog.plist
+# Temporarily keep Nextcloud stopped without unloading the watchdog
+touch ~/.nextcloud-watchdog-disabled
+pkill -x Nextcloud
+
+# Re-enable automatic launch
+rm ~/.nextcloud-watchdog-disabled
+
+# Unload watchdog completely
+launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.nextcloud.watchdog.plist
 
 # Reload after editing the plist
-launchctl unload ~/Library/LaunchAgents/com.nextcloud.watchdog.plist
-launchctl load   ~/Library/LaunchAgents/com.nextcloud.watchdog.plist
+launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.nextcloud.watchdog.plist 2>/dev/null || true
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.nextcloud.watchdog.plist
 ```

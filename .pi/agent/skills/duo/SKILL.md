@@ -28,15 +28,17 @@ Use `.m4a` for MP4/MOV sources, `.mp3` if the source is webm/mkv.
 
 ### 3. Transcribe with Whisper
 
-Use the `medium` model for better accuracy (the default `tiny`/`base` hallucinates on non-English):
+Use the `medium` model for best accuracy. The `base`/`tiny` models hallucinate frequently on non-English and produce poor quality transcripts:
 ```bash
 uvx --from openai-whisper whisper --language LANG_CODE --model medium "input.MP4"
 ```
 
 Common language codes: `zh` (Chinese), `ja` (Japanese), `es` (Spanish), `fr` (French), `de` (German), `ko` (Korean).
 
+**Quality over speed**: If `medium` times out, wait for it to complete rather than falling back to `base`. A slower but accurate transcript is better than a fast hallucinated one. For long videos (>10 min), consider `large-v2` or `large-v3`.
+
 Whisper may hallucinate on:
-- Silent gaps (channel intros, music, pauses) — watch for garbled English in a non-English transcript
+- Silent gaps (channel intros, music, pauses) — watch for garbled text in a non-English transcript
 - Looping/repeated segments — deduplicate
 - Channel branding overlaid as audio — cut these (they're not lesson content)
 
