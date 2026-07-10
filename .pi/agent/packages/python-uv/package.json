@@ -1,0 +1,15 @@
+{
+  "name": "pi-extension-python-uv",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "keywords": ["pi-package"],
+  "description": "Force Python through uv (uv run script.py / uv run --with / stdin) instead of the global python interpreter. Bundles a bash gate extension and a python-uv skill.",
+  "pi": {
+    "extensions": ["./extensions"],
+    "skills": ["./skills"]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  }
+}
