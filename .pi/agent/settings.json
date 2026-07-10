@@ -1,10 +1,11 @@
 {
-  "lastChangelogVersion": "0.79.10",
+  "lastChangelogVersion": "0.80.6",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.5",
+  "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": false,
   "packages": [
+    "./packages/python-uv",
     "npm:pi-btw",
     "npm:pi-kanban",
     "npm:pi-ghostty",
@@ -35,7 +36,12 @@
     "github-copilot/claude-haiku-4.5",
     "github-copilot/claude-opus-4.7",
     "github-copilot/claude-sonnet-4.6",
-    "openai-codex/gpt-5.5"
+    "openai-codex/gpt-5.5",
+    "openai-codex/gpt-5.6-luna",
+    "openai-codex/gpt-5.6-sol",
+    "openai-codex/gpt-5.6-terra",
+    "semia/qwen3.5-122b",
+    "semia/semia-large"
   ],
   "powerline": {
     "preset": "default",

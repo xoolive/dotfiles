@@ -1,0 +1,44 @@
+{
+  "providers": {
+    "semia": {
+      "baseUrl": "https://semia.onera.net:8080/api",
+      "api": "openai-completions",
+      "apiKey": "sk-eca452bf3eff4184ad23baf13f6588e7",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false,
+        "maxTokensField": "max_tokens"
+      },
+      "models": [
+        {
+          "id": "qwen3.5-122b",
+          "name": "Qwen 3.5 122B",
+          "input": ["text"],
+          "contextWindow": 131072,
+          "maxTokens": 32768,
+          "reasoning": true,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "semia-large",
+          "name": "GLM-5.2",
+          "input": ["text", "image"],
+          "contextWindow": 262144,
+          "maxTokens": 32768,
+          "reasoning": true,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    }
+  }
+}
