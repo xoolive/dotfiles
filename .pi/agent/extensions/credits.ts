@@ -62,11 +62,18 @@ export default function (pi: ExtensionAPI) {
 		// status is enough for persistent credit display.
 		const theme = ctx.ui.theme;
 		const provider = ctx.model?.provider;
-		const line = provider === "github-copilot"
-			? renderGitHub(status.github, theme, 96)
-			: provider === "openai-codex"
-				? renderGpt(status.gpt, theme, 96)
-				: `${renderGitHub(status.github, theme, 96)}${theme.fg("dim", " │ ")}${renderGpt(status.gpt, theme, 96)}`;
+		const showGitHub = provider === "github-copilot" || provider == null;
+		const showGpt = provider === "openai-codex" || provider == null;
+		let line = "";
+		if (showGitHub && showGpt) {
+			line = `${renderGitHub(status.github, theme, 96)}${theme.fg("dim", " │ ")}${renderGpt(status.gpt, theme, 96)}`;
+		} else if (showGitHub) {
+			line = renderGitHub(status.github, theme, 96);
+		} else if (showGpt) {
+			line = renderGpt(status.gpt, theme, 96);
+		}
+		// No credits to show for this provider (e.g., semia, local models)
+		if (!line) line = theme.fg("dim", "");
 		// Footer status sanitization trims leading normal spaces. ZWSP + NBSPs
 		// keep a small visual gap after Pi's footer separator.
 		ctx.ui.setStatus("credits", `\u200B\u00A0\u00A0${line}`);
