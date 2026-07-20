@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.80.6",
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-sol",
+  "defaultProvider": "semia",
+  "defaultModel": "semia-large",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": false,
   "packages": [
@@ -33,20 +33,25 @@
   ],
   "theme": "ghostty-sync-47c8ca45",
   "enabledModels": [
-    "github-copilot/claude-haiku-4.5",
-    "github-copilot/claude-opus-4.7",
     "github-copilot/claude-sonnet-4.6",
-    "openai-codex/gpt-5.5",
     "openai-codex/gpt-5.6-luna",
     "openai-codex/gpt-5.6-sol",
-    "openai-codex/gpt-5.6-terra",
     "semia/qwen3.5-122b",
     "semia/semia-large"
   ],
   "powerline": {
     "preset": "default",
     "fixedEditor": true,
-    "mouseScroll": true
+    "mouseScroll": true,
+    "customItems": [
+      {
+        "id": "credits",
+        "statusKey": "credits",
+        "position": "secondary",
+        "hideWhenMissing": true,
+        "excludeFromExtensionStatuses": true
+      }
+    ]
   },
   "workingVibe": "rugby",
   "workingVibeMode": "file"
