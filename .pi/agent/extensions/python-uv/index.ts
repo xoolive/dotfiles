@@ -1,5 +1,9 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { isToolCallEventType } from "@earendil-works/pi-coding-agent";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const EXTENSION_DIR = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * python-uv
@@ -13,6 +17,8 @@ import { isToolCallEventType } from "@earendil-works/pi-coding-agent";
  *     `uv run` (e.g. `uv run python …`, `uv run --with X python …`). The model
  *     must use `uv run script.py` (PEP 723 inline deps), `uv run --with pkg
  *     script.py`, or `uv run --with pkg - <<'PY'`.
+ *   - `resources_discover` registers the co-located `SKILL.md` so the skill is
+ *     discovered alongside this extension (same layout as chatgpt-web-review).
  *
  * Detection is command-position based so `grep python`, `cat python-uv.ts`,
  * `which python`, `echo python` etc. are NOT blocked.
@@ -143,6 +149,12 @@ function pythonInvoked(command: string): boolean {
 }
 
 export default function (pi: ExtensionAPI) {
+	// Register the co-located skill so it is discovered alongside this
+	// extension (mirrors extensions/chatgpt-web-review/index.ts).
+	pi.on("resources_discover", () => ({
+		skillPaths: [path.join(EXTENSION_DIR, "SKILL.md")],
+	}));
+
 	// Proactive: inject the standing policy into the system prompt each turn,
 	// before the model writes any command.
 	pi.on("before_agent_start", (event) => {

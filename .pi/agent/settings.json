@@ -5,7 +5,6 @@
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": false,
   "packages": [
-    "./packages/python-uv",
     "npm:pi-btw",
     "npm:pi-kanban",
     "npm:pi-ghostty",
