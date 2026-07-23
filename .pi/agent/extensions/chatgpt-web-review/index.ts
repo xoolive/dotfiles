@@ -1,4 +1,5 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { StringEnum } from "@earendil-works/pi-ai";
 import { Type } from "typebox";
 import { spawn } from "node:child_process";
 import path from "node:path";
@@ -11,6 +12,7 @@ const UV = process.env["CHATGPT_WEB_REVIEW_UV"] ?? "uv";
 const REVIEW_SCRIPT =
   process.env["CHATGPT_WEB_REVIEW_SCRIPT"] ??
   path.join(EXTENSION_DIR, "scripts", "browser_review.py");
+const HISTORY_SCRIPT = path.join(EXTENSION_DIR, "scripts", "history.py");
 
 export default function (pi: ExtensionAPI) {
   pi.on("resources_discover", () => ({
@@ -21,15 +23,20 @@ export default function (pi: ExtensionAPI) {
     name: "chatgpt_web_review",
     label: "ChatGPT web repo review",
     description:
-      "Zip a repository's git-tracked files (with secret denylist + pre-scan) and " +
-      "request a code review from the logged-in ChatGPT web UI by driving a real " +
-      "Firefox browser (Playwright). Auth is via cookie seeding from your real " +
-      "Firefox profile (no interactive login — bypasses the 'insecure browser' " +
-      "login block). Returns the review as markdown.",
+      "Request a repository review through the logged-in ChatGPT web UI, or list/fetch " +
+      "existing review conversations after a local timeout. Repository uploads include " +
+      "git-tracked files only and pass a secret pre-scan. Authentication is seeded from " +
+      "the user's real Firefox profile.",
     parameters: Type.Object({
-      repoPath: Type.String({
-        description: "Absolute path to the git repository to review.",
-      }),
+      action: Type.Optional(
+        StringEnum(["review", "list-history", "fetch-history"] as const),
+      ),
+      repoPath: Type.Optional(Type.String({
+        description: "Absolute repository path (required for action=review).",
+      })),
+      conversation: Type.Optional(Type.String({
+        description: "Conversation URL, /c/path, or ID for action=fetch-history.",
+      })),
       prompt: Type.Optional(
         Type.String({
           description: "Custom review prompt. Defaults to a structured security/bugs/arch/maint review.",
@@ -54,6 +61,12 @@ export default function (pi: ExtensionAPI) {
           description: "Open the profile, report whether logged in, and exit without sending.",
         }),
       ),
+      maxWaitSeconds: Type.Optional(
+        Type.Integer({
+          minimum: 1,
+          description: "Local wait for a new review before history recovery is required.",
+        }),
+      ),
     }),
     // Signature must match ExtensionAPI.ToolDefinition.execute:
     //   (toolCallId, params, signal, onUpdate, ctx)
@@ -62,15 +75,30 @@ export default function (pi: ExtensionAPI) {
     // "onUpdate is not a function". onUpdate is also optional (| undefined),
     // so calls are guarded with optional chaining.
     async execute(toolCallId, params, signal, onUpdate, _ctx) {
-      const args = [UV, "run", REVIEW_SCRIPT];
-      if (params.setup) {
+      const action = params.action ?? "review";
+      const args = [UV, "run", action === "review" ? REVIEW_SCRIPT : HISTORY_SCRIPT];
+
+      if (action === "list-history") {
+        args.push("--list");
+      } else if (action === "fetch-history") {
+        if (!params.conversation) {
+          throw new Error("conversation is required for action=fetch-history");
+        }
+        args.push("--conversation", params.conversation);
+      } else if (params.setup) {
         args.push("--setup");
       } else {
-        args.push("--repo", path.resolve(params.repoPath));
+        if (!params.repoPath && !params.dryRun) {
+          throw new Error("repoPath is required for action=review");
+        }
+        if (params.repoPath) args.push("--repo", path.resolve(params.repoPath));
         if (params.prompt) args.push("--prompt", params.prompt);
         if (params.headless) args.push("--headless");
+        if (params.maxWaitSeconds) {
+          args.push("--max-wait", String(params.maxWaitSeconds));
+        }
       }
-      if (params.dryRun && !params.setup) args.push("--dry-run");
+      if (params.dryRun && action === "review" && !params.setup) args.push("--dry-run");
 
       onUpdate?.({ content: [{ type: "text", text: `▶ ${args.join(" ")}` }] });
 

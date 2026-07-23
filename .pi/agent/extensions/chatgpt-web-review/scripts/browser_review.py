@@ -32,6 +32,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import time
 import zipfile
 from pathlib import Path
@@ -250,8 +251,8 @@ def type_prompt_and_send(page, text: str) -> None:
         raise SystemExit("[browser] could not submit the prompt (no send button, Enter failed).")
 
 
-def wait_for_completion(page, max_seconds: int = 360) -> None:
-    """Wait until the assistant finishes generating."""
+def wait_for_completion(page, max_seconds: int = 360) -> bool:
+    """Wait until the assistant finishes generating; report whether it did."""
     # Allow a moment for generation to start (stop button may appear).
     start = time.time()
     # Wait for at least one assistant message to appear.
@@ -267,7 +268,7 @@ def wait_for_completion(page, max_seconds: int = 360) -> None:
             if stable_since is None:
                 stable_since = time.time()
             if stop is None and time.time() - stable_since > 2.5:
-                return
+                return True
         else:
             stable_since = None
             last_text = current or last_text
@@ -276,8 +277,9 @@ def wait_for_completion(page, max_seconds: int = 360) -> None:
             if stable_since is None:
                 stable_since = time.time()
             if time.time() - stable_since > 3.0:
-                return
+                return True
     sys.stderr.write("[browser] wait_for_completion hit max timeout; returning best-effort.\n")
+    return False
 
 
 def scrape_last_assistant(page) -> str:
@@ -344,10 +346,10 @@ def seed_cookies(ctx, page) -> bool:
     return True
 
 
-def safe_goto(page, label: str = "navigate") -> None:
-    """Navigate to chatgpt.com, tolerating redirect-induced NS_BINDING_ABORTED."""
+def safe_goto(page, label: str = "navigate", url: str = BASE) -> None:
+    """Navigate safely, tolerating redirect-induced NS_BINDING_ABORTED."""
     try:
-        page.goto(BASE, wait_until="domcontentloaded", timeout=45000)
+        page.goto(url, wait_until="domcontentloaded", timeout=45000)
     except Exception as e:
         sys.stderr.write(
             f"[browser] {label} load issue ({type(e).__name__}); continuing.\n"
@@ -400,7 +402,11 @@ def main() -> int:
     ap.add_argument("--inline", action="store_true",
                     help="Inline sources as text instead of attaching the zip (fallback if upload selectors break).")
     ap.add_argument("--profile", help="Override the persistent profile directory.")
-    ap.add_argument("--dump-dom", action="store_true", help="Print composer HTML on selector failures.")
+    ap.add_argument("--dump-dom", action="store_true", help="Save page HTML on selector failures.")
+    ap.add_argument(
+        "--max-wait", type=int, default=360,
+        help="Maximum seconds to wait locally; timed-out conversations remain in ChatGPT history.",
+    )
     ap.add_argument("--no-seed", action="store_true",
                     help="Do not auto-inject real-Firefox cookies when not logged in.")
     args = ap.parse_args()
@@ -409,6 +415,7 @@ def main() -> int:
         ap.error("one of --setup, --repo, --zip, or --dry-run is required")
 
     prof = profile_dir(args.profile)
+    conversation_url = ""
     sys.stderr.write(f"[browser] profile: {prof}\n")
 
     with sync_playwright() as p:
@@ -470,12 +477,49 @@ def main() -> int:
             sys.stderr.write(f"[browser] inline bundle chars={len(bundle)}\n")
 
         type_prompt_and_send(page, prompt)
+        page.wait_for_timeout(1_500)
+        conversation_url = page.url if "/c/" in page.url else ""
+        if conversation_url:
+            sys.stderr.write(f"[browser] conversation: {conversation_url}\n")
         sys.stderr.write("[browser] prompt sent; waiting for completion...\n")
-        wait_for_completion(page)
+        completed = wait_for_completion(page, max_seconds=max(1, args.max_wait))
         review = scrape_last_assistant(page) or ""
+
+        # File-heavy reviews can finish server-side just after the local wait.
+        # Reload the known conversation once before handing recovery to history.py.
+        if not review and conversation_url:
+            safe_goto(page, "reload-conversation", conversation_url)
+            page.wait_for_timeout(5_000)
+            review = scrape_last_assistant(page) or ""
+
+        if not review:
+            recovery = {
+                "timestamp": int(time.time()),
+                "conversation": conversation_url,
+                "completed_locally": completed,
+                "repo": str(Path(args.repo).resolve()) if args.repo else None,
+            }
+            recovery_path = prof / "review-history.jsonl"
+            with recovery_path.open("a", encoding="utf-8") as stream:
+                stream.write(json.dumps(recovery) + "\n")
+            if conversation_url:
+                sys.stderr.write(
+                    "[browser] response not yet available locally. Retrieve it later with:\n"
+                    f"  uv run {Path(__file__).parent / 'history.py'} "
+                    f"--conversation {conversation_url}\n"
+                )
+        if not review and args.dump_dom:
+            dump_path = Path(tempfile.gettempdir()) / "chatgpt-web-review-dom.html"
+            dump_path.write_text(page.content(), encoding="utf-8")
+            sys.stderr.write(f"[browser] DOM saved to {dump_path}\n")
         ctx.close()
 
     if not review.strip():
+        if conversation_url:
+            raise SystemExit(
+                "[browser] no assistant text available yet; the conversation was retained at "
+                f"{conversation_url}. Use scripts/history.py --conversation to retrieve it later."
+            )
         raise SystemExit("[browser] no assistant text scraped. Re-run with --dump-dom.")
     sys.stdout.write(review)
     if not review.endswith("\n"):

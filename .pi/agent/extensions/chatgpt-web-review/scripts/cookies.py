@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import argparse
 import configparser
-import glob
 import json
 import os
 import shutil
@@ -27,54 +26,81 @@ import sys
 import tempfile
 from pathlib import Path
 
-FIREFOX_DIR = Path.home() / ".mozilla" / "firefox"
 # Hosts that carry the ChatGPT session/backbone cookies.
 HOST_FRAGMENTS = ("chatgpt.com", "openai.com", "auth0.openai.com")
 SESSION_TOKEN_BASE = "__Secure-next-auth.session-token"
 
 
+def _firefox_roots() -> list[Path]:
+    """Return platform-specific Firefox configuration roots.
+
+    ``FIREFOX_PROFILE_ROOT`` can override discovery for portable, Developer
+    Edition, or otherwise non-standard installations.
+    """
+    override = os.environ.get("FIREFOX_PROFILE_ROOT")
+    if override:
+        return [Path(override).expanduser()]
+
+    home = Path.home()
+    roots: list[Path] = []
+    if sys.platform == "darwin":
+        roots.append(home / "Library" / "Application Support" / "Firefox")
+    elif os.name == "nt":
+        appdata = os.environ.get("APPDATA")
+        if appdata:
+            roots.append(Path(appdata) / "Mozilla" / "Firefox")
+    else:
+        roots.extend([
+            home / ".mozilla" / "firefox",
+            home / "snap" / "firefox" / "common" / ".mozilla" / "firefox",
+            home / ".var" / "app" / "org.mozilla.firefox" / ".mozilla" / "firefox",
+        ])
+
+    return [root for root in roots if root.exists()]
+
+
 def _scan_profiles() -> list[Path]:
     """Return candidate profile directories from profiles.ini + filesystem."""
     candidates: list[Path] = []
-    ini = FIREFOX_DIR / "profiles.ini"
+    defaults: set[str] = set()
     seen: set[str] = set()
-    if ini.exists():
-        cp = configparser.ConfigParser()
-        try:
-            cp.read(ini)
-        except configparser.Error:
+
+    for firefox_dir in _firefox_roots():
+        ini = firefox_dir / "profiles.ini"
+        if ini.exists():
             cp = configparser.ConfigParser()
-        for section in cp.sections():
-            if not section.lower().startswith("profile"):
-                continue
-            path = cp.get(section, "Path", fallback=None)
-            rel = cp.getboolean(section, "IsRelative", fallback=True)
-            is_default = cp.getboolean(section, "Default", fallback=False)
-            if not path:
-                continue
-            p = (FIREFOX_DIR / path) if rel else Path(path)
-            if p.is_dir() and path not in seen:
-                seen.add(path)
-                candidates.append(p)
-        # Put the ini-declared default first.
-        candidates.sort(key=lambda _p: not _is_ini_default(_p, cp))
-    # Fallback: any dir that looks like a profile.
-    for p in sorted(FIREFOX_DIR.glob("*/")):
-        if p.is_dir() and (p / "cookies.sqlite").exists() and str(p) not in {str(c) for c in candidates}:
-            candidates.append(p)
+            try:
+                cp.read(ini)
+            except configparser.Error:
+                cp = configparser.ConfigParser()
+            for section in cp.sections():
+                if not section.lower().startswith("profile"):
+                    continue
+                path = cp.get(section, "Path", fallback=None)
+                rel = cp.getboolean(section, "IsRelative", fallback=True)
+                if not path:
+                    continue
+                profile = (firefox_dir / path) if rel else Path(path).expanduser()
+                key = str(profile.resolve())
+                if profile.is_dir() and key not in seen:
+                    seen.add(key)
+                    candidates.append(profile)
+                if cp.getboolean(section, "Default", fallback=False):
+                    defaults.add(key)
+
+        # Fallback for incomplete or missing profiles.ini files. macOS normally
+        # stores profiles below Firefox/Profiles; Linux commonly stores them
+        # directly below the Firefox root.
+        for cookie_db in sorted(firefox_dir.glob("**/cookies.sqlite")):
+            profile = cookie_db.parent
+            key = str(profile.resolve())
+            if key not in seen:
+                seen.add(key)
+                candidates.append(profile)
+
+    # Put profiles declared as default first without disturbing root order.
+    candidates.sort(key=lambda profile: str(profile.resolve()) not in defaults)
     return candidates
-
-
-def _is_ini_default(p: Path, cp: configparser.ConfigParser) -> bool:
-    for section in cp.sections():
-        if not section.lower().startswith("profile"):
-            continue
-        path = cp.get(section, "Path", fallback=None)
-        if not path:
-            continue
-        if Path(path).name == p.name and cp.getboolean(section, "Default", fallback=False):
-            return True
-    return False
 
 
 def _read_cookies_from_profile(profile: Path) -> list[dict]:
